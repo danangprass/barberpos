@@ -188,7 +188,7 @@
 			<h2 class="text-sm font-semibold">{$t('branches.staff')}</h2>
 		</header>
 		{#if staffList.length === 0}
-			<EmptyState icon="◌" title={$t('login.noStaff')} />
+			<EmptyState icon="alert" title={$t('login.noStaff')} />
 		{:else}
 			<table class="w-full text-sm">
 				<thead class="border-b border-ink-700 bg-ink-800/50 text-left text-xs tracking-wide text-ink-400 uppercase">
@@ -219,7 +219,7 @@
 							<td class="px-4 py-2.5">
 								<span
 									class="badge"
-									class:bg-brass-500={person.role === 'owner'}
+									class:bg-barber-red-500={person.role === 'owner'}
 									class:text-ink-950={person.role === 'owner'}
 									class:bg-azure-600={person.role === 'manager'}
 									class:text-white={person.role === 'manager'}
@@ -235,7 +235,7 @@
 							</td>
 							<td class="px-4 py-2.5">
 								<div class="flex justify-end gap-1">
-									<button class="p-1.5 text-ink-500 hover:text-brass-400" onclick={() => openEdit(person)} title={$t('common.edit')}>
+									<button class="p-1.5 text-ink-500 hover:text-barber-red-400" onclick={() => openEdit(person)} title={$t('common.edit')}>
 										<Icon name="edit" size={15} />
 									</button>
 									<button class="p-1.5 text-ink-600 hover:text-rust-400" onclick={() => (deleting = person)} title={$t('common.delete')}>
@@ -284,7 +284,7 @@
 				{#each $branches as branch (branch.id)}
 					<label
 						class="flex items-center gap-2 rounded-lg border px-3 py-1.5 text-sm transition {form.branchIds.includes(branch.id)
-							? 'border-brass-500 bg-brass-500/10'
+							? 'border-barber-red-500 bg-barber-red-500/10'
 							: 'border-ink-700'}"
 					>
 						<input

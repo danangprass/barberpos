@@ -97,6 +97,8 @@ export const id = {
 	'sell.assignedTo': 'Ditangani oleh',
 	'sell.commission': 'Komisi',
 	'sell.insufficientStock': 'Stok kurang',
+	'sell.qrisHelp': 'Verifikasi pembayaran di aplikasi QRIS pelanggan, lalu catat kode referensinya di sini.',
+	'sell.customerFacing': 'Tip untuk barber',
 
 	'receipt.title': 'Struk',
 	'receipt.thanks': 'Terima kasih',
@@ -120,6 +122,7 @@ export const id = {
 	'catalog.category': 'Kategori',
 	'catalog.lowStock': 'Stok menipis',
 	'catalog.noResults': 'Tidak ada hasil',
+	'catalog.outOfStock': 'habis',
 
 	'dashboard.todaySales': 'Penjualan hari ini',
 	'dashboard.transactions': 'Transaksi',
@@ -131,6 +134,7 @@ export const id = {
 	'dashboard.noSales': 'Belum ada transaksi hari ini',
 	'dashboard.viewAll': 'Lihat semua',
 	'dashboard.bookedToday': 'Jadwal hari ini',
+	'dashboard.stockOk': 'Stok aman',
 
 	'queue.title': 'Antrean & Jadwal',
 	'queue.walkIn': 'Pelanggan datang',
@@ -214,6 +218,7 @@ export const id = {
 	'settings.offline': 'Luring',
 	'settings.outbox': 'Antrean kirim',
 	'settings.pendingSales': 'Transaksi menunggu sinkron',
+	'settings.waitingReceipt': 'menunggu nomor struk.',
 	'settings.syncNow': 'Sinkronkan sekarang',
 	'settings.syncing': 'Menyinkronkan…',
 	'settings.allSynced': 'Semua transaksi tersinkron',
@@ -337,6 +342,8 @@ export const en: Record<MessageKey, string> = {
 	'sell.assignedTo': 'Handled by',
 	'sell.commission': 'Commission',
 	'sell.insufficientStock': 'Stock short',
+	'sell.qrisHelp': 'Verify payment in the customer\'s QRIS app, then record the reference code here.',
+	'sell.customerFacing': 'Tip for your barber',
 
 	'receipt.title': 'Receipt',
 	'receipt.thanks': 'Thank you',
@@ -359,6 +366,7 @@ export const en: Record<MessageKey, string> = {
 	'catalog.lowStockThreshold': 'Low-stock threshold',
 	'catalog.category': 'Category',
 	'catalog.lowStock': 'Low stock',
+	'catalog.outOfStock': 'Out of stock',
 	'catalog.noResults': 'No results',
 
 	'dashboard.todaySales': "Today's sales",
@@ -371,6 +379,7 @@ export const en: Record<MessageKey, string> = {
 	'dashboard.noSales': 'No sales yet today',
 	'dashboard.viewAll': 'View all',
 	'dashboard.bookedToday': "Today's bookings",
+	'dashboard.stockOk': 'Stock is fine',
 
 	'queue.title': 'Queue & Schedule',
 	'queue.walkIn': 'Walk-in',
@@ -454,6 +463,7 @@ export const en: Record<MessageKey, string> = {
 	'settings.offline': 'Offline',
 	'settings.outbox': 'Outbox',
 	'settings.pendingSales': 'Sales waiting to sync',
+	'settings.waitingReceipt': 'waiting for receipt number.',
 	'settings.syncNow': 'Sync now',
 	'settings.syncing': 'Syncing…',
 	'settings.allSynced': 'All sales synced',

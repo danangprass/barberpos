@@ -167,7 +167,7 @@
 			<button
 				class="px-4 py-1.5 text-sm font-medium"
 				class:bg-ink-700={tab === 'service'}
-				class:text-brass-400={tab === 'service'}
+				class:text-barber-red-400={tab === 'service'}
 				class:text-ink-400={tab !== 'service'}
 				onclick={() => (tab = 'service')}
 			>
@@ -176,7 +176,7 @@
 			<button
 				class="px-4 py-1.5 text-sm font-medium"
 				class:bg-ink-700={tab === 'product'}
-				class:text-brass-400={tab === 'product'}
+				class:text-barber-red-400={tab === 'product'}
 				class:text-ink-400={tab !== 'product'}
 				onclick={() => (tab = 'product')}
 			>
@@ -235,7 +235,7 @@
 											min="0"
 											class="!w-20 !py-1 text-sm tabular-nums"
 											class:text-rust-400={(item.stock ?? 0) <= 0}
-											class:text-brass-400={(item.stock ?? 0) > 0 && (item.stock ?? 0) <= (item.lowStockThreshold ?? 5)}
+											class:text-barber-red-400={(item.stock ?? 0) > 0 && (item.stock ?? 0) <= (item.lowStockThreshold ?? 5)}
 											value={item.stock ?? 0}
 											onchange={(e) => setStock(item, Number(e.currentTarget.value))}
 										/>
@@ -250,7 +250,7 @@
 							{#if $canManageCatalog}
 								<td class="px-4 py-2.5">
 									<div class="flex justify-end gap-1">
-										<button class="p-1.5 text-ink-500 hover:text-brass-400" onclick={() => openEdit(item)} title={$t('common.edit')}>
+										<button class="p-1.5 text-ink-500 hover:text-barber-red-400" onclick={() => openEdit(item)} title={$t('common.edit')}>
 											<Icon name="edit" size={15} />
 										</button>
 										<button class="p-1.5 text-ink-500 hover:text-ink-200" onclick={() => toggleActive(item)} title={item.active ? $t('common.inactive') : $t('common.active')}>

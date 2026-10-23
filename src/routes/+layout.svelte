@@ -18,7 +18,7 @@
 {#if $loading}
 	<div class="grid h-dvh place-items-center bg-ink-950">
 		<div class="flex flex-col items-center gap-3">
-			<div class="size-10 animate-spin rounded-full border-2 border-ink-700 border-t-brass-500"></div>
+			<div class="size-10 animate-spin rounded-full border-2 border-ink-700 border-t-barber-red-500"></div>
 			<p class="text-sm text-ink-400">Memuat…</p>
 		</div>
 	</div>

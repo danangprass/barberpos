@@ -53,8 +53,8 @@
 
 	const COLUMNS: Array<{ status: AppointmentStatus; label: MessageKey; dot: string }> = [
 		{ status: 'booked', label: 'queue.status.booked', dot: 'bg-ink-500' },
-		{ status: 'arrived', label: 'queue.status.arrived', dot: 'bg-azure-400' },
-		{ status: 'queued', label: 'queue.status.queued', dot: 'bg-brass-500' },
+		{ status: 'arrived', label: 'queue.status.arrived', dot: 'bg-amber-400' },
+		{ status: 'queued', label: 'queue.status.queued', dot: 'bg-amber-500' },
 		{ status: 'in_service', label: 'queue.status.in_service', dot: 'bg-jade-400' }
 	];
 
@@ -201,7 +201,7 @@
 			<button
 				class="px-4 py-1.5 text-sm font-medium"
 				class:bg-ink-700={view === 'board'}
-				class:text-brass-400={view === 'board'}
+				class:text-barber-red-400={view === 'board'}
 				class:text-ink-400={view !== 'board'}
 				onclick={() => (view = 'board')}
 			>
@@ -210,7 +210,7 @@
 			<button
 				class="px-4 py-1.5 text-sm font-medium"
 				class:bg-ink-700={view === 'schedule'}
-				class:text-brass-400={view === 'schedule'}
+				class:text-barber-red-400={view === 'schedule'}
 				class:text-ink-400={view !== 'schedule'}
 				onclick={() => (view = 'schedule')}
 			>
@@ -225,7 +225,7 @@
 
 	{#if view === 'board'}
 		{#if liveAppointments.length === 0 && doneToday.length === 0}
-			<EmptyState icon="🗓" title={$t('queue.noAppointments')} hint={$t('queue.walkIn')}>
+			<EmptyState icon="calendar" title={$t('queue.noAppointments')} hint={$t('queue.walkIn')}>
 				<button class="btn btn-primary mt-2" onclick={openWalkin}>{$t('queue.walkIn')}</button>
 			</EmptyState>
 		{:else}
@@ -256,7 +256,7 @@
 										<span class="ms-auto font-semibold text-ink-300">{formatIDR(priceOf(apt))}</span>
 									</div>
 									{#if apt.notes}
-										<p class="mb-2 truncate text-[11px] text-brass-400">“{apt.notes}”</p>
+										<p class="mb-2 truncate text-[11px] text-barber-red-400">“{apt.notes}”</p>
 									{/if}
 									<div class="flex flex-wrap gap-1">
 										<button class="btn btn-ghost flex-1 px-2 py-1 text-[11px]" onclick={() => setStatus(apt, action.next)}>
@@ -301,7 +301,7 @@
 		{/if}
 	{:else}
 		{#if dayAppointments.length === 0}
-			<EmptyState icon="🗓" title={$t('queue.noAppointments')} />
+			<EmptyState icon="calendar" title={$t('queue.noAppointments')} />
 		{:else}
 			<div class="card overflow-hidden">
 				<ul class="divide-y divide-ink-800">
@@ -375,7 +375,7 @@
 				{#each services as service (service.id)}
 					<label
 						class="flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-sm transition {form.serviceIds.includes(service.id)
-							? 'border-brass-500 bg-brass-500/10'
+							? 'border-barber-red-500 bg-barber-red-500/10'
 							: 'border-ink-700'}"
 					>
 						<input
@@ -399,7 +399,7 @@
 		{#if form.serviceIds.length > 0}
 			<div class="flex items-center justify-between rounded-lg bg-ink-800 px-3 py-2 text-sm">
 				<span class="text-ink-400">{formatDuration(formDuration)}</span>
-				<span class="font-semibold tabular-nums text-brass-400">{formatIDR(formTotal)}</span>
+				<span class="font-semibold tabular-nums text-barber-red-400">{formatIDR(formTotal)}</span>
 			</div>
 		{/if}
 	</div>

@@ -73,6 +73,7 @@
 			'M12 17h.01',
 			'M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z'
 		],
+		close: ['M18 6L6 18', 'M6 6l12 12'],
 		logout: ['M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4', 'M16 17l5-5-5-5', 'M21 12H9'],
 		globe: [
 			'circle:12,12,10',
@@ -92,6 +93,44 @@
 			'M8 8h8',
 			'M8 12h8',
 			'M8 16h5'
+		],
+		money: [
+			'circle:12,12,10',
+			'path:M12 6v6',
+			'circle:18,6,2'
+		],
+		smartphone: [
+			'rect:4,2,16,20,4',
+			'path:M8 7a4 4 0 0 1 8 0',
+			'path:M8 17a4 4 0 0 1 8 0',
+			'path:M12 11v2'
+		],
+		crown: [
+			'path:M2 12l4-6h12l4 6-2 6H4z',
+			'circle:8,7,1.5',
+			'circle:12,7,1.5',
+			'circle:16,7,1.5'
+		],
+		trophy: [
+			'circle:12,12,8',
+			'path:M12 2v8',
+			'path:M8 12h8',
+			'path:M6 17h12l-2 4H8z'
+		],
+		chair: [
+			'path:M3 16h18',
+			'path:M5 14v-5h14v5',
+			'path:M7 14V9a5 5 0 0 1 10 0v5',
+			'circle:9,11,2',
+			'circle:15,11,2'
+		],
+		qr: [
+			'rect:3,3,18,18,2',
+			'path:M8 8h8v8H8z',
+			'circle:6,6,1',
+			'circle:18,18,1',
+			'circle:18,6,1',
+			'circle:6,18,1'
 		]
 	};
 

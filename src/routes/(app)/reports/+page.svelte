@@ -78,27 +78,27 @@
 	</div>
 
 	{#if $canViewAllBranches && $branches.length > 1}
-		<div class="flex items-center gap-2 rounded-lg border border-brass-600/30 bg-brass-500/10 px-3 py-2 text-xs text-brass-400">
+		<div class="flex items-center gap-2 rounded-lg border border-barber-red-600/30 bg-barber-red-500/10 px-3 py-2 text-xs text-barber-red-400">
 			<Icon name="globe" size={14} />
 			{$t('reports.byBranch')} — {$t('nav.branches')}
 		</div>
 	{/if}
 
 	<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-		<StatCard label={$t('reports.gross')} value={formatIDR(summary.gross)} tone="brass" />
+		<StatCard label={$t('reports.gross')} value={formatIDR(summary.gross)} tone="barber-red" />
 		<StatCard label={$t('reports.saleCount')} value={String(summary.count)} />
 		<StatCard label={$t('reports.avgTicket')} value={formatIDR(summary.avgTicket)} />
 		<StatCard label={$t('reports.commissionAccrued')} value={formatIDR(commissions)} tone="jade" />
 	</div>
 
 	{#if daySales.length === 0}
-		<EmptyState icon="◔" title={$t('reports.noData')} />
+		<EmptyState icon="chart" title={$t('reports.noData')} />
 	{:else}
 		<div class="grid gap-4 xl:grid-cols-3">
 			<!-- Z-report -->
 			<section class="card overflow-hidden xl:col-span-1">
 				<header class="flex items-center gap-2 border-b border-ink-700 px-4 py-3">
-					<Icon name="receipt" size={16} class="text-brass-500" />
+					<Icon name="receipt" size={16} class="text-barber-red-500" />
 					<h2 class="text-sm font-semibold">{$t('reports.zReport')}</h2>
 				</header>
 				<div class="p-4">
@@ -134,12 +134,12 @@
 				{#each SECTIONS as section (section.title)}
 					<section class="card overflow-hidden">
 						<header class="flex items-center gap-2 border-b border-ink-700 px-4 py-3">
-							<Icon name={section.icon} size={16} class="text-brass-500" />
+							<Icon name={section.icon} size={16} class="text-barber-red-500" />
 							<h2 class="text-sm font-semibold">{$t(section.title)}</h2>
 						</header>
 						{#if section.title === 'reports.byBarber'}
 							{#if perf.length === 0}
-								<EmptyState icon="◌" title={$t('reports.noData')} />
+								<EmptyState icon="alert" title={$t('reports.noData')} />
 							{:else}
 								<table class="w-full text-sm">
 									<thead class="border-b border-ink-800 text-left text-xs tracking-wide text-ink-400 uppercase">
@@ -165,7 +165,7 @@
 						{:else}
 							{@const rows = section.title === 'reports.topServices' ? topServices : topProducts}
 							{#if rows.length === 0}
-								<EmptyState icon="◌" title={$t('reports.noData')} />
+								<EmptyState icon="alert" title={$t('reports.noData')} />
 							{:else}
 								<table class="w-full text-sm">
 									<thead class="border-b border-ink-800 text-left text-xs tracking-wide text-ink-400 uppercase">
@@ -195,7 +195,7 @@
 				{#if $canViewAllBranches && $branches.length > 1}
 					<section class="card overflow-hidden">
 						<header class="flex items-center gap-2 border-b border-ink-700 px-4 py-3">
-							<Icon name="building" size={16} class="text-brass-500" />
+							<Icon name="building" size={16} class="text-barber-red-500" />
 							<h2 class="text-sm font-semibold">{$t('reports.byBranch')}</h2>
 						</header>
 						<table class="w-full text-sm">
@@ -205,7 +205,7 @@
 										<td class="px-4 py-2 font-medium">{row.name}</td>
 										<td class="px-4 py-2 tabular-nums text-ink-400">{row.count} ×</td>
 										<td class="px-4 py-2 text-right tabular-nums text-ink-400">{formatIDR(row.avgTicket)}</td>
-										<td class="px-4 py-2 text-right font-semibold tabular-nums text-brass-400">{formatIDR(row.gross)}</td>
+										<td class="px-4 py-2 text-right font-semibold tabular-nums text-barber-red-400">{formatIDR(row.gross)}</td>
 									</tr>
 								{/each}
 							</tbody>

@@ -2,8 +2,9 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { repo } from '#lib/data/index';
-import type { AuthFailureKind } from '#lib/data/repository';
+	import type { AuthFailureKind } from '#lib/data/repository';
 	import type { DirectoryEntry } from '#lib/data/repository';
+	import Icon from '#lib/components/Icon.svelte';
 	import { session, signIn, signOut } from '#lib/stores/session.svelte';
 	import { t, locale } from '#lib/i18n';
 	import { isValidPin } from '#lib/utils/pin';
@@ -135,20 +136,23 @@ import type { AuthFailureKind } from '#lib/data/repository';
 <div class="grid min-h-dvh lg:grid-cols-[1fr_minmax(420px,520px)]">
 	<!-- Brand panel -->
 	<div class="relative hidden overflow-hidden bg-ink-900 lg:block">
-		<div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(217,164,65,0.18),transparent_55%)]"></div>
-		<div class="absolute -right-24 -bottom-24 size-96 rounded-full bg-brass-600/10 blur-3xl"></div>
+		<div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(220,38,38,0.22),transparent_55%)]"></div>
+		<div class="absolute -right-24 -bottom-24 size-96 rounded-full bg-barber-red-800/15 blur-3xl"></div>
+		<div class="absolute -left-20 -top-20 size-72 rounded-full bg-bronze-700/10 blur-3xl"></div>
 		<div class="relative flex h-full flex-col justify-between p-12">
 			<div class="flex items-center gap-3">
-				<div class="grid size-11 place-items-center rounded-xl bg-brass-500 text-xl font-bold text-ink-950">P</div>
+				<div class="grid size-11 place-items-center rounded-xl bg-barber-red-600">
+					<Icon name="scissors" size={20} class="text-ink-50" />
+				</div>
 				<span class="text-lg font-semibold tracking-tight">{$t('app.name')}</span>
 			</div>
 
 			<div class="max-w-md">
 				<h1 class="text-4xl leading-tight font-semibold tracking-tight text-balance">
-					Sistem kasir untuk pangkas rambut — layanan, produk, dan komisi barber dalam satu layar.
+					GoodFellas Barbershop
 				</h1>
 				<p class="mt-4 text-ink-400">
-					Bisa dipakai saat luring. Transaksi masuk antrean kirim dan tersinkron otomatis saat koneksi kembali.
+					Precise cuts, honest prices. Cashier, services, and barber commissions in one place.
 				</p>
 			</div>
 
@@ -167,7 +171,9 @@ import type { AuthFailureKind } from '#lib/data/repository';
 		<div class="mx-auto w-full max-w-sm">
 			<div class="mb-8 flex items-center justify-between">
 				<div class="flex items-center gap-3 lg:hidden">
-					<div class="grid size-10 place-items-center rounded-xl bg-brass-500 font-bold text-ink-950">P</div>
+					<div class="grid size-10 place-items-center rounded-xl bg-barber-red-600">
+						<Icon name="scissors" size={16} class="text-ink-50" />
+					</div>
 					<span class="font-semibold">{$t('app.name')}</span>
 				</div>
 				<div class="ms-auto">
@@ -192,7 +198,7 @@ import type { AuthFailureKind } from '#lib/data/repository';
 
 				{#if loading}
 					<div class="grid place-items-center py-10">
-						<div class="size-8 animate-spin rounded-full border-2 border-ink-700 border-t-brass-500"></div>
+						<div class="size-8 animate-spin rounded-full border-2 border-ink-700 border-t-barber-red-500"></div>
 					</div>
 				{:else if selectable.length === 0}
 					<p class="card p-4 text-sm text-ink-400">{$t('login.noStaff')}</p>
@@ -200,12 +206,12 @@ import type { AuthFailureKind } from '#lib/data/repository';
 					<div class="grid gap-2">
 						{#each selectable as person (person.id)}
 							<button
-								class="card flex items-center gap-3 p-3 text-left transition hover:border-brass-500/60 hover:bg-ink-800"
+								class="card flex items-center gap-3 p-3 text-left transition hover:border-barber-red-500/60 hover:bg-ink-800"
 								onclick={() => choose(person.id)}
 							>
 								<div
 									class="grid size-10 shrink-0 place-items-center rounded-full text-sm font-semibold"
-									class:bg-brass-500={person.role === 'owner'}
+									class:bg-barber-red-500={person.role === 'owner'}
 									class:bg-azure-600={person.role === 'manager'}
 									class:bg-ink-700={person.role === 'barber'}
 									class:text-ink-950={person.role !== 'barber'}
@@ -222,7 +228,7 @@ import type { AuthFailureKind } from '#lib/data/repository';
 					</div>
 				{/if}
 			{:else}
-				<button class="mb-4 text-xs text-ink-400 hover:text-brass-400" onclick={() => choose('')}>
+				<button class="mb-4 text-xs text-ink-400 hover:text-barber-red-400" onclick={() => choose('')}>
 					← {$t('login.back')}
 				</button>
 
@@ -233,7 +239,7 @@ import type { AuthFailureKind } from '#lib/data/repository';
 					{#each Array(pinSlots) as _, i (i)}
 						<span
 							class="size-3.5 rounded-full transition"
-							class:bg-brass-500={i < pin.length}
+							class:bg-barber-red-500={i < pin.length}
 							class:bg-ink-700={i >= pin.length}
 						></span>
 					{/each}

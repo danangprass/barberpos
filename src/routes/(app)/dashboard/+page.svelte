@@ -58,7 +58,7 @@
 	</div>
 
 	<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-		<StatCard label={$t('dashboard.todaySales')} value={formatIDR(summary.gross)} tone="brass" icon="◈" />
+		<StatCard label={$t('dashboard.todaySales')} value={formatIDR(summary.gross)} tone="barber-red" icon="chart" />
 		<StatCard label={$t('dashboard.transactions')} value={String(summary.count)} hint={`${summary.serviceCount} svc · ${summary.productCount} prd`} />
 		<StatCard label={$t('dashboard.averageTicket')} value={formatIDR(summary.avgTicket)} />
 		<StatCard
@@ -66,7 +66,7 @@
 			value={`${inService} / ${waiting}`}
 			hint={`${$t('dashboard.waiting')}: ${waiting}`}
 			tone={inService > 0 ? 'jade' : 'default'}
-			icon="◷"
+			icon="clock"
 		/>
 	</div>
 
@@ -75,12 +75,12 @@
 		<section class="card overflow-hidden">
 			<header class="flex items-center justify-between border-b border-ink-700 px-4 py-3">
 				<h2 class="text-sm font-semibold">{$t('dashboard.recentSales')}</h2>
-				<button class="text-xs text-brass-400 hover:underline" onclick={() => goto('/reports')}>
+				<button class="text-xs text-barber-red-400 hover:underline" onclick={() => goto('/reports')}>
 					{$t('dashboard.viewAll')} →
 				</button>
 			</header>
 			{#if recent.length === 0}
-				<EmptyState icon="◔" title={$t('dashboard.noSales')} />
+				<EmptyState icon="chart" title={$t('dashboard.noSales')} />
 			{:else}
 				<ul class="divide-y divide-ink-800">
 					{#each recent as sale (sale.id)}
@@ -103,7 +103,7 @@
 								<span class="shrink-0 text-xs text-ink-500">{formatTime(sale.soldAt)}</span>
 								<span class="w-24 shrink-0 text-right text-sm font-semibold tabular-nums">{formatIDR(sale.total)}</span>
 								{#if sale.syncState === 'pending_sync'}
-									<span class="badge bg-brass-600/20 text-brass-400" title={$t('settings.pendingSales')}>⏳</span>
+									<span class="badge bg-barber-red-600/20 text-barber-red-400" title={$t('settings.pendingSales')}>⏳</span>
 								{/if}
 							</button>
 						</li>
@@ -117,12 +117,12 @@
 			<section class="card overflow-hidden">
 				<header class="flex items-center justify-between border-b border-ink-700 px-4 py-3">
 					<h2 class="text-sm font-semibold">{$t('dashboard.bookedToday')}</h2>
-					<button class="text-xs text-brass-400 hover:underline" onclick={() => goto('/queue')}>
+					<button class="text-xs text-barber-red-400 hover:underline" onclick={() => goto('/queue')}>
 						{$t('nav.queue')} →
 					</button>
 				</header>
 				{#if todayAppointments.length === 0}
-					<EmptyState icon="🗓" title={$t('queue.noAppointments')} />
+					<EmptyState icon="calendar" title={$t('queue.noAppointments')} />
 				{:else}
 					<ul class="divide-y divide-ink-800">
 						{#each todayAppointments.slice(0, 5) as apt (apt.id)}
@@ -151,17 +151,17 @@
 			<section class="card overflow-hidden">
 				<header class="flex items-center justify-between border-b border-ink-700 px-4 py-3">
 					<h2 class="text-sm font-semibold">{$t('dashboard.lowStock')}</h2>
-					<button class="text-xs text-brass-400 hover:underline" onclick={() => goto('/catalog')}>
+					<button class="text-xs text-barber-red-400 hover:underline" onclick={() => goto('/catalog')}>
 						{$t('nav.catalog')} →
 					</button>
 				</header>
 				{#if lowStock.length === 0}
-					<EmptyState icon="✓" title="Stok aman" />
+					<EmptyState icon="check" title={$t('dashboard.stockOk')} />
 				{:else}
 					<ul class="divide-y divide-ink-800">
 						{#each lowStock as item (item.id)}
 							<li class="flex items-center gap-3 px-4 py-2.5">
-								<Icon name="alert" size={15} class="text-brass-500" />
+								<Icon name="alert" size={15} class="text-barber-red-500" />
 								<span class="min-w-0 flex-1 truncate text-sm">{item.name}</span>
 								<span class="text-sm font-semibold tabular-nums" class:text-rust-400={(item.stock ?? 0) <= 0}>
 									{item.stock ?? 0}

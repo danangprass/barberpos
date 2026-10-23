@@ -118,7 +118,7 @@
 			{#each [{ code: 'id', label: 'Bahasa Indonesia' }, { code: 'en', label: 'English' }] as option (option.code)}
 				<button
 					class="btn flex-1"
-					class:bg-brass-500={$locale === option.code}
+					class:bg-barber-red-500={$locale === option.code}
 					class:text-ink-950={$locale === option.code}
 					class:bg-ink-800={$locale !== option.code}
 					class:text-ink-300={$locale !== option.code}
@@ -135,7 +135,7 @@
 		<header class="flex items-center justify-between border-b border-ink-700 px-4 py-3">
 			<h2 class="text-sm font-semibold">{$t('settings.connectivity')}</h2>
 			<span
-				class="badge {$online ? 'bg-jade-600 text-white' : 'bg-brass-600 text-white'}"
+				class="badge {$online ? 'bg-jade-600 text-white' : 'bg-amber-600 text-white'}"
 			>
 				{$online ? $t('settings.online') : $t('settings.offline')}
 			</span>
@@ -159,7 +159,7 @@
 					{$t('settings.pendingSales')}
 				</span>
 				<span class="flex items-center gap-2">
-					<span class="text-sm font-semibold tabular-nums" class:text-brass-400={$outbox.length > 0} class:text-jade-400={$outbox.length === 0}>
+					<span class="text-sm font-semibold tabular-nums" class:text-barber-red-400={$outbox.length > 0} class:text-jade-400={$outbox.length === 0}>
 						{$outbox.length}
 					</span>
 					<button class="btn btn-ghost px-2.5 py-1 text-xs" onclick={() => drainOutbox()} disabled={$syncing || !$online || $outbox.length === 0}>
@@ -177,7 +177,7 @@
 				<ul class="divide-y divide-ink-800 rounded-lg border border-ink-700">
 					{#each queuedAges as entry (entry.clientId)}
 						<li class="flex items-center gap-3 px-3 py-2 text-xs">
-							<Icon name="offline" size={13} class="shrink-0 text-brass-500" />
+							<Icon name="offline" size={13} class="shrink-0 text-barber-red-500" />
 							<span class="min-w-0 flex-1 truncate font-mono text-ink-400">{entry.clientId}</span>
 							<span class="shrink-0 text-ink-500">{entry.age}</span>
 							<span class="shrink-0 text-ink-600">{$t('settings.attempts')} {entry.attempts}</span>
@@ -187,8 +187,8 @@
 			{/if}
 
 			{#if pendingSales > 0}
-				<p class="text-xs text-brass-400">
-					{pendingSales} struk luring menunggu nomor final.
+				<p class="text-xs text-amber-400">
+					{pendingSales} {$t('settings.pendingSales')} {$t('settings.waitingReceipt')}
 				</p>
 			{/if}
 		</div>
@@ -230,7 +230,7 @@
 	<section class="card border-dashed p-4">
 		<h2 class="mb-1 text-sm font-semibold">{$t('settings.backend')}</h2>
 		<p class="mb-3 flex flex-wrap items-center gap-2 text-xs text-ink-500">
-			<span class="badge {backendName === 'firebase' ? 'bg-jade-600 text-white' : 'bg-brass-600 text-white'}">
+			<span class="badge {backendName === 'firebase' ? 'bg-jade-600 text-white' : 'bg-amber-600 text-white'}">
 				{backendName === 'firebase' ? 'Firebase' : 'Mock'}
 			</span>
 			{backendName === 'firebase' ? $t('settings.backendFirebase') : $t('settings.backendMock')}
@@ -240,7 +240,7 @@
 			<div class="mb-3 rounded-lg border border-ink-800 p-3">
 				<div class="mb-1 flex items-center justify-between gap-2">
 					<span class="text-xs font-medium text-ink-400">{$t('settings.backendHealth')}</span>
-					<button class="text-xs text-brass-400 underline" onclick={() => checkBackend()}>
+					<button class="text-xs text-barber-red-400 underline" onclick={() => checkBackend()}>
 						{$t('common.retry')}
 					</button>
 				</div>
@@ -261,7 +261,7 @@
 			<h3 class="mb-1 text-sm font-semibold">{$t('settings.migration')}</h3>
 			<p class="mb-3 text-xs leading-relaxed text-ink-500">{$t('settings.migrationHint')}</p>
 			<div class="rounded-lg border border-ink-800 bg-ink-900 p-3">
-				<code class="block text-xs text-brass-400">node scripts/seed-live.cjs</code>
+				<code class="block text-xs text-barber-red-400">node scripts/seed-live.cjs</code>
 				<p class="mt-2 text-xs leading-relaxed text-ink-500">{$t('settings.migrationLocal')}</p>
 			</div>
 		{:else}

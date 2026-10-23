@@ -108,7 +108,7 @@
 				{#each branchBarbers as barber (barber.id)}
 					<button
 						class="btn shrink-0 px-3 py-1.5 text-xs"
-						class:bg-brass-500={$cartBarberId === barber.id}
+						class:bg-barber-red-500={$cartBarberId === barber.id}
 						class:text-ink-950={$cartBarberId === barber.id}
 						class:bg-ink-800={$cartBarberId !== barber.id}
 						class:text-ink-300={$cartBarberId !== barber.id}
@@ -128,7 +128,7 @@
 					<button
 						class="px-3 text-xs font-medium"
 						class:bg-ink-700={tab === 'service'}
-						class:text-brass-400={tab === 'service'}
+						class:text-barber-red-400={tab === 'service'}
 						class:text-ink-400={tab !== 'service'}
 						onclick={() => (tab = 'service')}
 					>
@@ -137,7 +137,7 @@
 					<button
 						class="px-3 text-xs font-medium"
 						class:bg-ink-700={tab === 'product'}
-						class:text-brass-400={tab === 'product'}
+						class:text-barber-red-400={tab === 'product'}
 						class:text-ink-400={tab !== 'product'}
 						onclick={() => (tab = 'product')}
 					>
@@ -149,30 +149,30 @@
 
 		<div class="min-h-0 flex-1 overflow-y-auto p-3 sm:p-4">
 			{#if tab === 'service' && !$cartBarberId}
-				<div class="card flex items-center gap-3 p-4 text-sm text-brass-400">
+				<div class="card flex items-center gap-3 p-4 text-sm text-barber-red-400">
 					<Icon name="scissors" size={18} />
 					{$t('sell.noBarber')}
 				</div>
 			{:else if visibleItems.length === 0}
-				<EmptyState icon="⌕" title={$t('catalog.noResults')} />
+				<EmptyState icon="search" title={$t('catalog.noResults')} />
 			{:else}
 				<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
 					{#each visibleItems as item (item.id)}
 						<button
-							class="card flex flex-col items-start gap-1 p-3 text-left transition hover:border-brass-500/60 disabled:opacity-40"
+							class="card flex flex-col items-start gap-1.5 p-4 text-left transition-all duration-75 hover:border-barber-red-500/60 active:scale-[0.97] disabled:opacity-40"
 							disabled={!canAdd || shortStock(item)}
 							onclick={() => pick(item)}
 						>
-							<span class="w-full truncate text-sm font-medium">{item.name}</span>
+							<span class="w-full truncate text-base font-medium">{item.name}</span>
 							<span class="text-xs text-ink-500">{categoryOf(item)}</span>
 							<span class="mt-1 flex w-full items-center justify-between">
-								<span class="text-sm font-semibold tabular-nums text-brass-400">{formatIDR(item.price)}</span>
+								<span class="text-lg font-semibold tabular-nums text-barber-red-400">{formatIDR(item.price)}</span>
 								{#if item.type === 'service'}
 									<span class="text-[11px] text-ink-500">{formatDuration(item.durationMin ?? 0)}</span>
 								{:else if shortStock(item)}
-									<span class="badge bg-rust-600/20 text-rust-400">habis</span>
+									<span class="badge bg-rust-600/20 text-rust-400">{$t('catalog.outOfStock')}</span>
 								{:else if stockOf(item) <= (item.lowStockThreshold ?? 5)}
-									<span class="badge bg-brass-600/20 text-brass-400">sisa {stockOf(item)}</span>
+									<span class="badge bg-amber-600/20 text-amber-400">{$t('catalog.lowStock')} {stockOf(item)}</span>
 								{/if}
 							</span>
 						</button>
@@ -215,7 +215,7 @@
 		<!-- Lines -->
 		<div class="min-h-24 flex-1 overflow-y-auto">
 			{#if $cartLines.length === 0}
-				<EmptyState icon="🛒" title={$t('sell.cartEmpty')} hint={$t('sell.cartEmptyHint')} />
+				<EmptyState icon="cart" title={$t('sell.cartEmpty')} hint={$t('sell.cartEmptyHint')} />
 			{:else}
 				<ul class="divide-y divide-ink-800">
 					{#each $cartLines as line (line.key)}
@@ -279,11 +279,11 @@
 
 			<div class="mb-3 flex items-end justify-between">
 				<span class="text-xs tracking-wide text-ink-400 uppercase">{$t('common.total')}</span>
-				<span class="text-2xl font-semibold tabular-nums text-brass-400">{formatIDR($cartTotal)}</span>
+				<span class="text-2xl font-semibold tabular-nums text-barber-red-400">{formatIDR($cartTotal)}</span>
 			</div>
 
 			{#if !$online}
-				<p class="mb-2 flex items-center gap-1.5 text-[11px] text-brass-400">
+				<p class="mb-2 flex items-center gap-1.5 text-[11px] text-barber-red-400">
 					<Icon name="offline" size={13} /> {$t('settings.offline')} · {$t('settings.pendingSales')}
 				</p>
 			{/if}

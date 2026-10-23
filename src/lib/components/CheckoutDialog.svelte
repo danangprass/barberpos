@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Modal from './Modal.svelte';
+	import Icon from './Icon.svelte';
 	import { t } from '#lib/i18n';
 	import { formatIDR } from '#lib/utils/format';
 	import type { Payment, PaymentMethod, Rupiah } from '#lib/types/domain';
@@ -74,31 +75,37 @@
 <svelte:window onkeydown={onKeydown} />
 
 <Modal {open} title={$t('sell.checkout')} subtitle={customerName} {onclose} width="max-w-lg">
-	<div class="mb-5 rounded-xl bg-ink-800 px-4 py-3 text-center">
+	<div class="mb-6 overflow-hidden rounded-xl border border-barber-red-900/40 bg-ink-800 px-6 py-4 text-center">
 		<p class="text-xs tracking-wide text-ink-400 uppercase">{$t('common.total')}</p>
-		<p class="text-3xl font-semibold tabular-nums text-brass-400">{formatIDR(total)}</p>
+		<p class="mt-1 text-4xl font-bold tabular-nums text-barber-red-400">{formatIDR(total)}</p>
 	</div>
 
-	<div class="mb-5 grid grid-cols-2 gap-2">
+	<div class="mb-6 grid grid-cols-2 gap-3">
 		<button
-			class="btn h-14 text-base"
-			class:bg-brass-500={method === 'cash'}
+			class="card flex h-16 cursor-pointer flex-col items-center justify-center gap-2 p-4 text-center transition-all duration-75 active:scale-95"
+			class:bg-barber-red-600={method === 'cash'}
 			class:text-ink-950={method === 'cash'}
+			class:border-barber-red-500={method === 'cash'}
 			class:bg-ink-800={method !== 'cash'}
+			class:border-ink-700={method !== 'cash'}
 			class:text-ink-300={method !== 'cash'}
 			onclick={() => (method = 'cash')}
 		>
-			💵 {$t('sell.cash')}
+			<Icon name="money" size={20} />
+			<span class="text-sm font-medium">{$t('sell.cash')}</span>
 		</button>
 		<button
-			class="btn h-14 text-base"
-			class:bg-brass-500={method === 'qris'}
+			class="card flex h-16 cursor-pointer flex-col items-center justify-center gap-2 p-4 text-center transition-all duration-75 active:scale-95"
+			class:bg-barber-red-600={method === 'qris'}
 			class:text-ink-950={method === 'qris'}
+			class:border-barber-red-500={method === 'qris'}
 			class:bg-ink-800={method !== 'qris'}
+			class:border-ink-700={method !== 'qris'}
 			class:text-ink-300={method !== 'qris'}
 			onclick={() => (method = 'qris')}
 		>
-			📱 {$t('sell.qris')}
+			<Icon name="smartphone" size={20} />
+			<span class="text-sm font-medium">{$t('sell.qris')}</span>
 		</button>
 	</div>
 
@@ -108,8 +115,8 @@
 			{#each QUICK as amount (amount)}
 				<button
 					class="btn btn-ghost h-11 text-sm"
-					class:border-brass-500={tendered === amount}
-					class:text-brass-400={tendered === amount}
+					class:border-barber-red-500={tendered === amount}
+					class:text-barber-red-400={tendered === amount}
 					onclick={() => chooseCash(amount)}
 				>
 					{formatIDR(amount)}
@@ -119,8 +126,8 @@
 
 		<button
 			class="btn btn-ghost w-full"
-			class:border-brass-500={exact}
-			class:text-brass-400={exact}
+			class:border-barber-red-500={exact}
+			class:text-barber-red-400={exact}
 			onclick={() => (tendered = total)}
 		>
 			{$t('common.total')}: {formatIDR(total)}
@@ -153,7 +160,7 @@
 			<p class="mt-2 text-xs text-rust-400">{$t('sell.qrisRef')} *</p>
 		{/if}
 		<p class="mt-4 rounded-lg bg-ink-800 px-3 py-2.5 text-xs leading-relaxed text-ink-400">
-			Verifikasi pembayaran di aplikasi QRIS pelanggan, lalu catat kode referensinya di sini.
+			{$t('sell.qrisHelp')}
 		</p>
 	{/if}
 

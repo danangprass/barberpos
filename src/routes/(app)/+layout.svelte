@@ -69,7 +69,9 @@
 		<!-- Desktop sidebar -->
 		<aside class="hidden w-60 shrink-0 flex-col border-e border-ink-800 bg-ink-900 lg:flex">
 			<div class="flex items-center gap-2.5 border-b border-ink-800 px-5 py-4">
-				<div class="grid size-9 place-items-center rounded-lg bg-brass-500 font-bold text-ink-950">P</div>
+				<div class="grid size-9 place-items-center rounded-lg bg-barber-red-600">
+					<Icon name="scissors" size={16} class="text-ink-50" />
+				</div>
 				<div class="min-w-0">
 					<p class="truncate text-sm font-semibold">{$t('app.name')}</p>
 					<p class="truncate text-[11px] text-ink-500">{activeBranch?.name ?? '—'}</p>
@@ -82,7 +84,7 @@
 						href={item.href}
 						class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition"
 						class:bg-ink-800={page.url.pathname.startsWith(item.href)}
-						class:text-brass-400={page.url.pathname.startsWith(item.href)}
+						class:text-barber-red-400={page.url.pathname.startsWith(item.href)}
 						class:text-ink-400={!page.url.pathname.startsWith(item.href)}
 						class:hover:bg-ink-850={!page.url.pathname.startsWith(item.href)}
 						class:hover:text-ink-200={!page.url.pathname.startsWith(item.href)}
@@ -90,7 +92,7 @@
 						<Icon name={item.icon} size={18} />
 						{$t(item.label)}
 						{#if item.href === '/settings' && $pendingCount > 0}
-							<span class="ms-auto rounded-full bg-brass-500 px-1.5 text-[10px] font-bold text-ink-950">
+							<span class="ms-auto rounded-full bg-barber-red-500 px-1.5 text-[10px] font-bold text-ink-950">
 								{$pendingCount}
 							</span>
 						{/if}
@@ -166,7 +168,7 @@
 					</button>
 				{:else}
 					<button
-						class="btn btn-ghost gap-1.5 border-brass-600/40 px-2.5 py-1 text-xs text-brass-400"
+						class="btn btn-ghost gap-1.5 border-barber-red-600/40 px-2.5 py-1 text-xs text-barber-red-400"
 						onclick={() => ($forceOffline = false)}
 						title={$t('settings.offline')}
 					>
@@ -200,13 +202,13 @@
 		<a
 			href={item.href}
 			class="relative flex min-w-16 flex-1 flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-medium"
-			class:text-brass-400={page.url.pathname.startsWith(item.href)}
+			class:text-barber-red-400={page.url.pathname.startsWith(item.href)}
 			class:text-ink-500={!page.url.pathname.startsWith(item.href)}
 		>
 			<Icon name={item.icon} size={20} />
 			<span class="truncate">{item.href === '/settings' ? $t('app.short') : $t(item.label)}</span>
 			{#if item.href === '/settings' && $pendingCount > 0}
-				<span class="absolute top-1 end-2 rounded-full bg-brass-500 px-1 text-[9px] font-bold text-ink-950">
+				<span class="absolute top-1 end-2 rounded-full bg-barber-red-500 px-1 text-[9px] font-bold text-ink-950">
 					{$pendingCount}
 				</span>
 			{/if}

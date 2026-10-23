@@ -94,7 +94,7 @@
 	</div>
 
 	{#if filtered.length === 0}
-		<EmptyState icon="◌" title={$t('customers.noResults')}>
+		<EmptyState icon="alert" title={$t('customers.noResults')}>
 			<button class="btn btn-primary mt-2" onclick={openCreate}>{$t('customers.newCustomer')}</button>
 		</EmptyState>
 	{:else}
@@ -132,7 +132,7 @@
 							</td>
 							<td class="px-4 py-2.5 text-right font-semibold tabular-nums">{formatIDR(stats.spent)}</td>
 							<td class="px-4 py-2.5 text-right">
-								<button class="p-1.5 text-ink-500 hover:text-brass-400" onclick={() => (viewing = customer)}>
+								<button class="p-1.5 text-ink-500 hover:text-barber-red-400" onclick={() => (viewing = customer)}>
 									<Icon name="chevron" size={16} />
 								</button>
 							</td>
@@ -189,7 +189,7 @@
 				<p class="text-[11px] text-ink-500">{$t('customers.visits')}</p>
 			</div>
 			<div class="card p-3 text-center">
-				<p class="text-lg font-semibold tabular-nums text-brass-400">{formatIDR(stats.spent)}</p>
+				<p class="text-lg font-semibold tabular-nums text-barber-red-400">{formatIDR(stats.spent)}</p>
 				<p class="text-[11px] text-ink-500">{$t('customers.totalSpent')}</p>
 			</div>
 			<div class="card p-3 text-center">
@@ -214,7 +214,7 @@
 			.sort((a, b) => b.soldAt.localeCompare(a.soldAt))
 			.slice(0, 8)}
 		{#if history.length === 0}
-			<EmptyState icon="◔" title={$t('reports.noData')} />
+			<EmptyState icon="chart" title={$t('reports.noData')} />
 		{:else}
 			<ul class="divide-y divide-ink-800 rounded-lg border border-ink-700">
 				{#each history as sale (sale.id)}

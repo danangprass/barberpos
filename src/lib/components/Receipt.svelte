@@ -2,6 +2,7 @@
 	import type { Barber, Branch, BranchSettings, Sale, Staff } from '#lib/types/domain';
 	import { formatDateTime, formatIDR } from '#lib/utils/format';
 	import { t } from '#lib/i18n';
+	import Icon from './Icon.svelte';
 
 	let {
 		sale,
@@ -114,7 +115,7 @@
 		{/if}
 	</div>
 
-	<button class="btn btn-primary" onclick={print}>🖨 {$t('sell.printReceipt')}</button>
+	<button class="btn btn-primary" onclick={print}><Icon name="printer" size={14} /> {$t('sell.printReceipt')}</button>
 </div>
 
 <style>

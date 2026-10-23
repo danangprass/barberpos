@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import Icon from './Icon.svelte';
 
 	let {
 		open,
@@ -29,7 +30,7 @@
 {#if open}
 	<div class="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
 		<button
-			class="absolute inset-0 bg-ink-950/80 backdrop-blur-sm"
+			class="absolute inset-0 bg-ink-950/85 backdrop-blur-sm"
 			aria-label="close"
 			onclick={onclose}
 		></button>
@@ -43,11 +44,11 @@
 					{#if subtitle}<p class="mt-0.5 text-xs text-ink-400">{subtitle}</p>{/if}
 				</div>
 				<button
-					class="btn btn-ghost size-9 shrink-0 p-0 text-lg leading-none"
+					class="btn btn-ghost size-9 shrink-0 p-0 text-base leading-none"
 					onclick={onclose}
 					aria-label="close"
 				>
-					×
+					<Icon name="close" size={16} class="text-ink-400" />
 				</button>
 			</header>
 
