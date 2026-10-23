@@ -2,8 +2,9 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { repo } from '#lib/data/index';
-import type { AuthFailureKind } from '#lib/data/repository';
+	import type { AuthFailureKind } from '#lib/data/repository';
 	import type { DirectoryEntry } from '#lib/data/repository';
+	import Icon from '#lib/components/Icon.svelte';
 	import { session, signIn, signOut } from '#lib/stores/session.svelte';
 	import { t, locale } from '#lib/i18n';
 	import { isValidPin } from '#lib/utils/pin';
@@ -135,20 +136,23 @@ import type { AuthFailureKind } from '#lib/data/repository';
 <div class="grid min-h-dvh lg:grid-cols-[1fr_minmax(420px,520px)]">
 	<!-- Brand panel -->
 	<div class="relative hidden overflow-hidden bg-ink-900 lg:block">
-		<div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(217,164,65,0.18),transparent_55%)]"></div>
-		<div class="absolute -right-24 -bottom-24 size-96 rounded-full bg-brass-600/10 blur-3xl"></div>
-		<div class="relative flex h-full flex-col justify-between p-12">
+		<div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(107,73,53,0.22),transparent_55%)]"></div>
+		<div class="absolute -right-24 -bottom-24 size-96 rounded-full bg-walnut-800/15 blur-3xl"></div>
+		<div class="absolute -left-20 -top-20 size-72 rounded-full bg-brass-700/10 blur-3xl"></div>
+		<div class="relative flex h-full flex-col justify-between p-12 text-ink-100">
 			<div class="flex items-center gap-3">
-				<div class="grid size-11 place-items-center rounded-xl bg-brass-500 text-xl font-bold text-ink-950">P</div>
+				<div class="grid size-11 place-items-center rounded-xl bg-walnut-600">
+					<Icon name="scissors" size={20} class="text-paper" />
+				</div>
 				<span class="text-lg font-semibold tracking-tight">{$t('app.name')}</span>
 			</div>
 
 			<div class="max-w-md">
 				<h1 class="text-4xl leading-tight font-semibold tracking-tight text-balance">
-					Sistem kasir untuk pangkas rambut — layanan, produk, dan komisi barber dalam satu layar.
+					GoodFellas Barbershop
 				</h1>
 				<p class="mt-4 text-ink-400">
-					Bisa dipakai saat luring. Transaksi masuk antrean kirim dan tersinkron otomatis saat koneksi kembali.
+					Precise cuts, honest prices. Cashier, services, and barber commissions in one place.
 				</p>
 			</div>
 
@@ -157,17 +161,19 @@ import type { AuthFailureKind } from '#lib/data/repository';
 				<span class="size-1 rounded-full bg-ink-600"></span>
 				<span>Bisa dipasang ke layar utama</span>
 				<span class="size-1 rounded-full bg-ink-600"></span>
-				<span>Multi cabang</span>
+				<span>Multi cabong</span>
 			</div>
 		</div>
 	</div>
 
 	<!-- Auth panel -->
-	<div class="flex flex-col justify-center bg-ink-950 px-6 py-10 sm:px-10">
+	<div class="flex flex-col justify-center bg-ivory-100 px-6 py-10 sm:px-10">
 		<div class="mx-auto w-full max-w-sm">
 			<div class="mb-8 flex items-center justify-between">
 				<div class="flex items-center gap-3 lg:hidden">
-					<div class="grid size-10 place-items-center rounded-xl bg-brass-500 font-bold text-ink-950">P</div>
+					<div class="grid size-10 place-items-center rounded-xl bg-walnut-600">
+						<Icon name="scissors" size={16} class="text-paper" />
+					</div>
 					<span class="font-semibold">{$t('app.name')}</span>
 				</div>
 				<div class="ms-auto">
@@ -182,74 +188,74 @@ import type { AuthFailureKind } from '#lib/data/repository';
 
 			{#if !selected}
 				<h2 class="text-xl font-semibold">{$t('login.chooseStaff')}</h2>
-				<p class="mt-1 mb-5 text-sm text-ink-400">{$t('login.subtitle')}</p>
+				<p class="mt-1 mb-5 text-sm text-ink-600">{$t('login.subtitle')}</p>
 
 				{#if backendNotReady}
-					<p class="card mb-4 border-rust-500/40 p-3 text-sm text-rust-300">
+					<p class="card mb-4 border-red-500/40 p-3 text-sm text-red-400">
 						{$t('login.serverNotReady')}
 					</p>
 				{/if}
 
 				{#if loading}
 					<div class="grid place-items-center py-10">
-						<div class="size-8 animate-spin rounded-full border-2 border-ink-700 border-t-brass-500"></div>
+						<div class="size-8 animate-spin rounded-full border-2 border-stone-300 border-t-walnut-500"></div>
 					</div>
 				{:else if selectable.length === 0}
-					<p class="card p-4 text-sm text-ink-400">{$t('login.noStaff')}</p>
+					<p class="card p-4 text-sm text-ink-600">{$t('login.noStaff')}</p>
 				{:else}
 					<div class="grid gap-2">
 						{#each selectable as person (person.id)}
 							<button
-								class="card flex items-center gap-3 p-3 text-left transition hover:border-brass-500/60 hover:bg-ink-800"
+								class="card flex items-center gap-3 p-3 text-left transition hover:border-walnut-500/60 hover:bg-ivory-200"
 								onclick={() => choose(person.id)}
 							>
 								<div
 									class="grid size-10 shrink-0 place-items-center rounded-full text-sm font-semibold"
-									class:bg-brass-500={person.role === 'owner'}
-									class:bg-azure-600={person.role === 'manager'}
-									class:bg-ink-700={person.role === 'barber'}
-									class:text-ink-950={person.role !== 'barber'}
-									class:text-ink-200={person.role === 'barber'}
+									class:bg-walnut-500={person.role === 'owner'}
+									class:bg-brass-600={person.role === 'manager'}
+									class:bg-ink-200={person.role === 'barber'}
+									class:text-paper={person.role !== 'barber'}
+									class:text-ink-600={person.role === 'barber'}
 								>
 									{person.displayName.slice(0, 2).toUpperCase()}
 								</div>
 								<div class="min-w-0">
 									<p class="truncate text-sm font-medium">{person.displayName}</p>
-									<p class="text-xs text-ink-500">{$t(`role.${person.role}` as 'role.owner')}</p>
+									<p class="text-xs text-ink-600">{$t(`role.${person.role}` as 'role.owner')}</p>
 								</div>
 							</button>
 						{/each}
 					</div>
 				{/if}
 			{:else}
-				<button class="mb-4 text-xs text-ink-400 hover:text-brass-400" onclick={() => choose('')}>
+				<button class="mb-4 text-xs text-ink-600 hover:text-walnut-500" onclick={() => choose('')}>
 					← {$t('login.back')}
 				</button>
 
 				<h2 class="text-xl font-semibold">{selected.displayName}</h2>
-				<p class="mt-1 text-sm text-ink-400">{$t('login.enterPin')}</p>
+				<p class="mt-1 text-sm text-ink-600">{$t('login.enterPin')}</p>
 
 				<div class="my-6 flex min-h-4 flex-wrap items-center justify-center gap-2.5">
 					{#each Array(pinSlots) as _, i (i)}
 						<span
 							class="size-3.5 rounded-full transition"
-							class:bg-brass-500={i < pin.length}
-							class:bg-ink-700={i >= pin.length}
+							class:bg-walnut-500={i < pin.length}
+							class:bg-ink-300={i >= pin.length}
 						></span>
 					{/each}
 				</div>
 
-				<p class="mb-1 text-center text-xs text-ink-500">{$t('login.pinPlaceholder')}</p>
+				<p class="mb-1 text-center text-xs text-ink-600">{$t('login.pinPlaceholder')}</p>
 
 				{#if error}
-					<p class="mb-3 text-center text-sm text-rust-400">{error}</p>
+					<p class="mb-3 text-center text-sm text-red-400">{error}</p>
 				{/if}
 
 				<div class="grid grid-cols-3 gap-2">
 					{#each KEYS as key (key)}
 						<button
 							class="btn btn-ghost h-14 text-lg"
-							class:text-ink-500={key === 'clear' || key === 'del'}
+							class:text-ink-600={key === 'clear' || key === 'del'}
 							onclick={() => press(key)}
 						>
 							{#if key === 'clear'}{$t('common.cancel')}{:else if key === 'del'}⌫{:else}{key}{/if}
@@ -262,7 +268,7 @@ import type { AuthFailureKind } from '#lib/data/repository';
 				</button>
 
 				{#if $session.isAuthenticated}
-					<button class="mt-3 w-full text-center text-xs text-ink-500 hover:text-ink-300" onclick={signOut}>
+					<button class="mt-3 w-full text-center text-xs text-ink-600 hover:text-walnut-500" onclick={signOut}>
 						{$t('login.signOut')}
 					</button>
 				{/if}

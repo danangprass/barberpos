@@ -81,7 +81,7 @@
 	<div class="flex flex-wrap items-center justify-between gap-3">
 		<div>
 			<h1 class="text-xl font-semibold">{$t('customers.title')}</h1>
-			<p class="text-sm text-ink-400">{$customers.length} {$t('common.items')}</p>
+			<p class="text-sm text-ink-500">{$customers.length} {$t('common.items')}</p>
 		</div>
 		<button class="btn btn-primary" onclick={openCreate}>
 			<Icon name="plus" size={16} /> {$t('customers.newCustomer')}
@@ -94,13 +94,13 @@
 	</div>
 
 	{#if filtered.length === 0}
-		<EmptyState icon="◌" title={$t('customers.noResults')}>
+		<EmptyState icon="alert" title={$t('customers.noResults')}>
 			<button class="btn btn-primary mt-2" onclick={openCreate}>{$t('customers.newCustomer')}</button>
 		</EmptyState>
 	{:else}
 		<div class="card overflow-hidden">
 			<table class="w-full text-sm">
-				<thead class="border-b border-ink-700 bg-ink-800/50 text-left text-xs tracking-wide text-ink-400 uppercase">
+				<thead class="border-b border-stone-300 bg-stone-200/30 text-left text-xs tracking-wide text-ink-500 uppercase">
 					<tr>
 						<th class="px-4 py-2.5 font-medium">{$t('common.name')}</th>
 						<th class="hidden px-4 py-2.5 font-medium sm:table-cell">{$t('customers.phone')}</th>
@@ -110,13 +110,13 @@
 						<th class="w-12 px-4 py-2.5"></th>
 					</tr>
 				</thead>
-				<tbody class="divide-y divide-ink-800">
+				<tbody class="divide-y divide-stone-200">
 					{#each filtered as customer (customer.id)}
 						{@const stats = statsOf(customer)}
-						<tr class="transition hover:bg-ink-850">
+						<tr class="transition hover:bg-ivory-200">
 							<td class="px-4 py-2.5">
 								<div class="flex items-center gap-2.5">
-									<div class="grid size-8 shrink-0 place-items-center rounded-full bg-ink-700 text-[11px] font-semibold text-ink-300">
+									<div class="grid size-8 shrink-0 place-items-center rounded-full bg-ink-200 text-[11px] font-semibold text-ink-600">
 										{initials(customer.name)}
 									</div>
 									<div class="min-w-0">
@@ -125,14 +125,14 @@
 									</div>
 								</div>
 							</td>
-							<td class="hidden px-4 py-2.5 text-ink-400 sm:table-cell">{customer.phone ?? '—'}</td>
+							<td class="hidden px-4 py-2.5 text-ink-500 sm:table-cell">{customer.phone ?? '—'}</td>
 							<td class="px-4 py-2.5 tabular-nums">{stats.count}</td>
-							<td class="hidden px-4 py-2.5 text-ink-400 md:table-cell">
+							<td class="hidden px-4 py-2.5 text-ink-500 md:table-cell">
 								{stats.last ? formatDate(stats.last, $intlLocale) : '—'}
 							</td>
 							<td class="px-4 py-2.5 text-right font-semibold tabular-nums">{formatIDR(stats.spent)}</td>
 							<td class="px-4 py-2.5 text-right">
-								<button class="p-1.5 text-ink-500 hover:text-brass-400" onclick={() => (viewing = customer)}>
+								<button class="p-1.5 text-ink-500 hover:text-walnut-500" onclick={() => (viewing = customer)}>
 									<Icon name="chevron" size={16} />
 								</button>
 							</td>
@@ -151,17 +151,17 @@
 >
 	<div class="space-y-3">
 		<div>
-			<label class="mb-1 block text-xs font-medium text-ink-400" for="c-name">{$t('common.name')}</label>
+			<label class="mb-1 block text-xs font-medium text-ink-500" for="c-name">{$t('common.name')}</label>
 			<input id="c-name" bind:value={form.name} placeholder="Budi Santoso" />
 		</div>
 		<div>
-			<label class="mb-1 block text-xs font-medium text-ink-400" for="c-phone">
+			<label class="mb-1 block text-xs font-medium text-ink-500" for="c-phone">
 				{$t('customers.phone')} <span class="text-ink-600">({$t('common.optional')})</span>
 			</label>
 			<input id="c-phone" bind:value={form.phone} inputmode="tel" placeholder="0812-3456-7890" />
 		</div>
 		<div>
-			<label class="mb-1 block text-xs font-medium text-ink-400" for="c-notes">{$t('customers.notes')}</label>
+			<label class="mb-1 block text-xs font-medium text-ink-500" for="c-notes">{$t('customers.notes')}</label>
 			<textarea id="c-notes" rows="2" bind:value={form.notes}></textarea>
 		</div>
 	</div>
@@ -189,7 +189,7 @@
 				<p class="text-[11px] text-ink-500">{$t('customers.visits')}</p>
 			</div>
 			<div class="card p-3 text-center">
-				<p class="text-lg font-semibold tabular-nums text-brass-400">{formatIDR(stats.spent)}</p>
+				<p class="text-lg font-semibold tabular-nums text-walnut-500">{formatIDR(stats.spent)}</p>
 				<p class="text-[11px] text-ink-500">{$t('customers.totalSpent')}</p>
 			</div>
 			<div class="card p-3 text-center">
@@ -199,10 +199,10 @@
 		</div>
 
 		{#if viewing.notes}
-			<p class="mt-3 rounded-lg bg-ink-800 px-3 py-2 text-sm text-ink-300">{viewing.notes}</p>
+			<p class="mt-3 rounded-lg bg-ivory-200 px-3 py-2 text-sm text-ink-600">{viewing.notes}</p>
 		{/if}
 
-		<h3 class="mt-4 mb-2 text-xs font-semibold tracking-wide text-ink-400 uppercase">
+		<h3 class="mt-4 mb-2 text-xs font-semibold tracking-wide text-ink-500 uppercase">
 			{$t('dashboard.recentSales')}
 		</h3>
 		{@const history = filterSales($sales, { branchIds: visibleBranchIds })
@@ -214,13 +214,13 @@
 			.sort((a, b) => b.soldAt.localeCompare(a.soldAt))
 			.slice(0, 8)}
 		{#if history.length === 0}
-			<EmptyState icon="◔" title={$t('reports.noData')} />
+			<EmptyState icon="chart" title={$t('reports.noData')} />
 		{:else}
-			<ul class="divide-y divide-ink-800 rounded-lg border border-ink-700">
+			<ul class="divide-y divide-stone-200 rounded-lg border border-stone-300">
 				{#each history as sale (sale.id)}
 					<li class="flex items-center gap-3 px-3 py-2 text-sm">
 						<div class="min-w-0 flex-1">
-							<p class="truncate text-xs text-ink-400">{sale.lines.map((l) => l.name).join(', ')}</p>
+							<p class="truncate text-xs text-ink-500">{sale.lines.map((l) => l.name).join(', ')}</p>
 							<p class="text-[11px] text-ink-500">{sale.receiptNo}</p>
 						</div>
 						<span class="shrink-0 text-xs tabular-nums text-ink-500">{formatDate(sale.soldAt, $intlLocale)}</span>

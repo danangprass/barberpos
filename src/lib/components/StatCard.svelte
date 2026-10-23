@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import Icon from './Icon.svelte';
 
 	let {
 		label,
@@ -12,24 +13,24 @@
 		value: string;
 		hint?: string;
 		icon?: string;
-		tone?: 'default' | 'brass' | 'jade' | 'rust';
+		tone?: 'default' | 'walnut' | 'sage' | 'red';
 	} = $props();
 
 	const toneClass = $derived(
 		{
-			default: 'text-ink-100',
-			brass: 'text-brass-400',
-			jade: 'text-jade-400',
-			rust: 'text-rust-400'
+			default: 'text-ink-900',
+			'walnut': 'text-walnut-500',
+			sage: 'text-sage-500',
+			red: 'text-red-500'
 		}[tone]
 	);
 </script>
 
 <div class="card p-4">
 	<div class="mb-1 flex items-center gap-2">
-		{#if icon}<span class="text-ink-500">{icon}</span>{/if}
-		<p class="text-xs font-medium tracking-wide text-ink-400 uppercase">{label}</p>
+		{#if icon}<Icon name={icon} size={16} class="text-ink-600" />{/if}
+		<p class="text-xs font-medium tracking-wide text-ink-600 uppercase">{label}</p>
 	</div>
 	<p class="text-2xl font-semibold tabular-nums {toneClass}">{value}</p>
-	{#if hint}<p class="mt-1 text-xs text-ink-500">{hint}</p>{/if}
+	{#if hint}<p class="mt-1 text-xs text-ink-600">{hint}</p>{/if}
 </div>

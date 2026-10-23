@@ -148,7 +148,7 @@
 	<div class="flex flex-wrap items-center justify-between gap-3">
 		<div>
 			<h1 class="text-xl font-semibold">{$t('branches.title')}</h1>
-			<p class="text-sm text-ink-400">{$branches.length} {$t('branches.activeBranches').toLowerCase()} · {$staff.length} {$t('branches.staff').toLowerCase()}</p>
+			<p class="text-sm text-ink-500">{$branches.length} {$t('branches.activeBranches').toLowerCase()} · {$staff.length} {$t('branches.staff').toLowerCase()}</p>
 		</div>
 		<button class="btn btn-primary" onclick={openCreate}>
 			<Icon name="plus" size={16} /> {$t('branches.newStaff')}
@@ -165,14 +165,14 @@
 						<h2 class="truncate text-sm font-semibold">{branch.name}</h2>
 						<p class="mt-0.5 truncate text-xs text-ink-500">{branch.address}</p>
 					</div>
-					<span class="badge shrink-0" class:bg-jade-600={branch.active} class:text-white={branch.active} class:bg-ink-700={!branch.active} class:text-ink-400={!branch.active}>
+					<span class="badge shrink-0" class:bg-sage-600={branch.active} class:text-white={branch.active} class:bg-ink-200={!branch.active} class:text-ink-500={!branch.active}>
 						{branch.active ? $t('common.active') : $t('common.inactive')}
 					</span>
 				</div>
 				<p class="mt-2 text-xs text-ink-500">{branch.phone}</p>
 				<div class="mt-3 flex items-center gap-1.5">
 					{#each branchStaff as person (person.id)}
-						<span class="grid size-7 place-items-center rounded-full bg-ink-700 text-[10px] font-semibold text-ink-300" title={person.displayName}>
+						<span class="grid size-7 place-items-center rounded-full bg-ink-200 text-[10px] font-semibold text-ink-600" title={person.displayName}>
 							{initials(person.displayName)}
 						</span>
 					{/each}
@@ -184,14 +184,14 @@
 
 	<!-- Staff -->
 	<section class="card overflow-hidden">
-		<header class="border-b border-ink-700 px-4 py-3">
+		<header class="border-b border-stone-300 px-4 py-3">
 			<h2 class="text-sm font-semibold">{$t('branches.staff')}</h2>
 		</header>
 		{#if staffList.length === 0}
-			<EmptyState icon="◌" title={$t('login.noStaff')} />
+			<EmptyState icon="alert" title={$t('login.noStaff')} />
 		{:else}
 			<table class="w-full text-sm">
-				<thead class="border-b border-ink-700 bg-ink-800/50 text-left text-xs tracking-wide text-ink-400 uppercase">
+				<thead class="border-b border-stone-300 bg-stone-200/30 text-left text-xs tracking-wide text-ink-500 uppercase">
 					<tr>
 						<th class="px-4 py-2.5 font-medium">{$t('common.name')}</th>
 						<th class="px-4 py-2.5 font-medium">{$t('branches.role')}</th>
@@ -200,18 +200,18 @@
 						<th class="w-24 px-4 py-2.5"></th>
 					</tr>
 				</thead>
-				<tbody class="divide-y divide-ink-800">
+				<tbody class="divide-y divide-stone-200">
 					{#each staffList as person (person.id)}
-						<tr class="hover:bg-ink-850">
+						<tr class="hover:bg-ivory-200">
 							<td class="px-4 py-2.5">
 								<div class="flex items-center gap-2.5">
-									<div class="grid size-8 shrink-0 place-items-center rounded-full bg-ink-700 text-[11px] font-semibold text-ink-300">
+									<div class="grid size-8 shrink-0 place-items-center rounded-full bg-ink-200 text-[11px] font-semibold text-ink-600">
 										{initials(person.displayName)}
 									</div>
 									<div class="min-w-0">
 										<p class="truncate font-medium">{person.displayName}</p>
 										{#if !person.active}
-											<span class="badge bg-ink-700 text-ink-400">{$t('common.inactive')}</span>
+											<span class="badge bg-ink-200 text-ink-500">{$t('common.inactive')}</span>
 										{/if}
 									</div>
 								</div>
@@ -219,26 +219,26 @@
 							<td class="px-4 py-2.5">
 								<span
 									class="badge"
-									class:bg-brass-500={person.role === 'owner'}
+									class:bg-walnut-500={person.role === 'owner'}
 									class:text-ink-950={person.role === 'owner'}
-									class:bg-azure-600={person.role === 'manager'}
+									class:bg-brass-600={person.role === 'manager'}
 									class:text-white={person.role === 'manager'}
-									class:bg-ink-700={person.role === 'barber'}
-									class:text-ink-300={person.role === 'barber'}
+									class:bg-ink-200={person.role === 'barber'}
+									class:text-ink-600={person.role === 'barber'}
 								>
 									{$t(`role.${person.role}` as 'role.owner')}
 								</span>
 							</td>
-							<td class="hidden px-4 py-2.5 text-ink-400 sm:table-cell">{person.phone || '—'}</td>
-							<td class="hidden px-4 py-2.5 text-ink-400 md:table-cell">
+							<td class="hidden px-4 py-2.5 text-ink-500 sm:table-cell">{person.phone || '—'}</td>
+							<td class="hidden px-4 py-2.5 text-ink-500 md:table-cell">
 								{person.branchIds.map((id) => $branches.find((b) => b.id === id)?.name ?? id).join(', ')}
 							</td>
 							<td class="px-4 py-2.5">
 								<div class="flex justify-end gap-1">
-									<button class="p-1.5 text-ink-500 hover:text-brass-400" onclick={() => openEdit(person)} title={$t('common.edit')}>
+									<button class="p-1.5 text-ink-500 hover:text-walnut-500" onclick={() => openEdit(person)} title={$t('common.edit')}>
 										<Icon name="edit" size={15} />
 									</button>
-									<button class="p-1.5 text-ink-600 hover:text-rust-400" onclick={() => (deleting = person)} title={$t('common.delete')}>
+									<button class="p-1.5 text-ink-600 hover:text-red-400" onclick={() => (deleting = person)} title={$t('common.delete')}>
 										<Icon name="trash" size={15} />
 									</button>
 								</div>
@@ -260,17 +260,17 @@
 	<div class="space-y-3">
 		<div class="grid gap-3 sm:grid-cols-2">
 			<div>
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="s-name">{$t('branches.displayName')}</label>
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="s-name">{$t('branches.displayName')}</label>
 				<input id="s-name" bind:value={form.displayName} placeholder="Rahmat Hidayat" />
 			</div>
 			<div>
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="s-phone">{$t('branches.phone')}</label>
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="s-phone">{$t('branches.phone')}</label>
 				<input id="s-phone" bind:value={form.phone} inputmode="tel" placeholder="0812-3456-7890" />
 			</div>
 		</div>
 
 		<div>
-			<label class="mb-1 block text-xs font-medium text-ink-400" for="s-role">{$t('branches.role')}</label>
+			<label class="mb-1 block text-xs font-medium text-ink-500" for="s-role">{$t('branches.role')}</label>
 			<select id="s-role" bind:value={form.role}>
 				{#each ROLES as role (role)}
 					<option value={role}>{$t(`role.${role}` as 'role.owner')}</option>
@@ -279,13 +279,13 @@
 		</div>
 
 		<div>
-			<p class="mb-1.5 text-xs font-medium text-ink-400">{$t('settings.branch')}</p>
+			<p class="mb-1.5 text-xs font-medium text-ink-500">{$t('settings.branch')}</p>
 			<div class="flex flex-wrap gap-2">
 				{#each $branches as branch (branch.id)}
 					<label
 						class="flex items-center gap-2 rounded-lg border px-3 py-1.5 text-sm transition {form.branchIds.includes(branch.id)
-							? 'border-brass-500 bg-brass-500/10'
-							: 'border-ink-700'}"
+							? 'border-walnut-500 bg-walnut-500/10'
+							: 'border-stone-300'}"
 					>
 						<input
 							type="checkbox"
@@ -299,8 +299,8 @@
 			</div>
 		</div>
 
-		<div class="rounded-lg border border-ink-700 p-3">
-			<p class="mb-2 text-xs font-medium text-ink-400">
+		<div class="rounded-lg border border-stone-300 p-3">
+			<p class="mb-2 text-xs font-medium text-ink-500">
 				{$t('branches.setPin')}
 				{#if editing}<span class="text-ink-600">({$t('common.optional')})</span>{/if}
 			</p>
@@ -309,7 +309,7 @@
 				<input type="password" inputmode="numeric" maxlength="6" bind:value={form.pinConfirm} placeholder="••••" />
 			</div>
 			{#if form.pinError}
-				<p class="mt-1.5 text-xs text-rust-400">{form.pinError}</p>
+				<p class="mt-1.5 text-xs text-red-400">{form.pinError}</p>
 			{:else}
 				<p class="mt-1.5 text-[11px] text-ink-600">
 					4–6 digit · {$t('login.securedBy')}
@@ -342,7 +342,7 @@
 	onclose={() => (deleting = null)}
 	width="max-w-sm"
 >
-	<p class="text-sm text-ink-300">
+	<p class="text-sm text-ink-600">
 		Staf <strong>{deleting?.displayName}</strong> akan dihapus permanen. Riwayat penjualan tidak berubah.
 	</p>
 	{#snippet footer()}

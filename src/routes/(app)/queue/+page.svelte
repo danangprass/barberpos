@@ -53,9 +53,9 @@
 
 	const COLUMNS: Array<{ status: AppointmentStatus; label: MessageKey; dot: string }> = [
 		{ status: 'booked', label: 'queue.status.booked', dot: 'bg-ink-500' },
-		{ status: 'arrived', label: 'queue.status.arrived', dot: 'bg-azure-400' },
-		{ status: 'queued', label: 'queue.status.queued', dot: 'bg-brass-500' },
-		{ status: 'in_service', label: 'queue.status.in_service', dot: 'bg-jade-400' }
+		{ status: 'arrived', label: 'queue.status.arrived', dot: 'bg-amber-400' },
+		{ status: 'queued', label: 'queue.status.queued', dot: 'bg-amber-500' },
+		{ status: 'in_service', label: 'queue.status.in_service', dot: 'bg-sage-400' }
 	];
 
 	const inColumn = (status: AppointmentStatus) => liveAppointments.filter((a) => a.status === status);
@@ -184,7 +184,7 @@
 	<div class="flex flex-wrap items-center justify-between gap-3">
 		<div>
 			<h1 class="text-xl font-semibold">{$t('queue.title')}</h1>
-			<p class="text-sm text-ink-400">{activeBranch?.name ?? '—'}</p>
+			<p class="text-sm text-ink-500">{activeBranch?.name ?? '—'}</p>
 		</div>
 		<div class="flex flex-wrap gap-2">
 			<button class="btn btn-ghost" onclick={openWalkin}>
@@ -200,18 +200,18 @@
 		<div class="flex overflow-hidden rounded-lg border border-ink-600">
 			<button
 				class="px-4 py-1.5 text-sm font-medium"
-				class:bg-ink-700={view === 'board'}
-				class:text-brass-400={view === 'board'}
-				class:text-ink-400={view !== 'board'}
+				class:bg-ink-200={view === 'board'}
+				class:text-walnut-500={view === 'board'}
+				class:text-ink-500={view !== 'board'}
 				onclick={() => (view = 'board')}
 			>
 				{$t('queue.board')}
 			</button>
 			<button
 				class="px-4 py-1.5 text-sm font-medium"
-				class:bg-ink-700={view === 'schedule'}
-				class:text-brass-400={view === 'schedule'}
-				class:text-ink-400={view !== 'schedule'}
+				class:bg-ink-200={view === 'schedule'}
+				class:text-walnut-500={view === 'schedule'}
+				class:text-ink-500={view !== 'schedule'}
 				onclick={() => (view = 'schedule')}
 			>
 				{$t('queue.scheduled')}
@@ -225,14 +225,14 @@
 
 	{#if view === 'board'}
 		{#if liveAppointments.length === 0 && doneToday.length === 0}
-			<EmptyState icon="🗓" title={$t('queue.noAppointments')} hint={$t('queue.walkIn')}>
+			<EmptyState icon="calendar" title={$t('queue.noAppointments')} hint={$t('queue.walkIn')}>
 				<button class="btn btn-primary mt-2" onclick={openWalkin}>{$t('queue.walkIn')}</button>
 			</EmptyState>
 		{:else}
 			<div class="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
 				{#each COLUMNS as column (column.status)}
 					<section class="card overflow-hidden">
-						<header class="flex items-center gap-2 border-b border-ink-700 px-3 py-2.5">
+						<header class="flex items-center gap-2 border-b border-stone-300 px-3 py-2.5">
 							<span class="size-2 rounded-full {column.dot}"></span>
 							<h2 class="text-xs font-semibold tracking-wide uppercase">{$t(column.label)}</h2>
 							<span class="ms-auto text-xs text-ink-500">{inColumn(column.status).length}</span>
@@ -240,7 +240,7 @@
 						<div class="min-h-24 space-y-2 p-2">
 							{#each inColumn(column.status) as apt (apt.id)}
 								{@const action = nextAction(apt)}
-								<article class="rounded-lg border border-ink-700 bg-ink-800 p-2.5">
+								<article class="rounded-lg border border-stone-300 bg-ivory-200 p-2.5">
 									<div class="mb-1 flex items-start justify-between gap-2">
 										<div class="min-w-0">
 											<p class="truncate text-sm font-medium">{apt.customerName}</p>
@@ -253,10 +253,10 @@
 										<span class="truncate">{barberName(apt.barberId)}</span>
 										<span>·</span>
 										<span>{formatDuration(apt.durationMin)}</span>
-										<span class="ms-auto font-semibold text-ink-300">{formatIDR(priceOf(apt))}</span>
+										<span class="ms-auto font-semibold text-ink-600">{formatIDR(priceOf(apt))}</span>
 									</div>
 									{#if apt.notes}
-										<p class="mb-2 truncate text-[11px] text-brass-400">“{apt.notes}”</p>
+										<p class="mb-2 truncate text-[11px] text-walnut-500">“{apt.notes}”</p>
 									{/if}
 									<div class="flex flex-wrap gap-1">
 										<button class="btn btn-ghost flex-1 px-2 py-1 text-[11px]" onclick={() => setStatus(apt, action.next)}>
@@ -267,7 +267,7 @@
 												{$t('queue.toSell')}
 											</button>
 										{/if}
-										<button class="p-1 text-ink-600 hover:text-rust-400" onclick={() => remove(apt)} title={$t('common.delete')}>
+										<button class="p-1 text-ink-600 hover:text-red-400" onclick={() => remove(apt)} title={$t('common.delete')}>
 											<Icon name="trash" size={13} />
 										</button>
 									</div>
@@ -283,10 +283,10 @@
 
 			{#if doneToday.length > 0}
 				<section class="card mt-4 overflow-hidden">
-					<header class="border-b border-ink-700 px-4 py-2.5">
-						<h2 class="text-xs font-semibold tracking-wide text-ink-400 uppercase">{$t('queue.status.done')}</h2>
+					<header class="border-b border-stone-300 px-4 py-2.5">
+						<h2 class="text-xs font-semibold tracking-wide text-ink-500 uppercase">{$t('queue.status.done')}</h2>
 					</header>
-					<ul class="divide-y divide-ink-800">
+					<ul class="divide-y divide-stone-200">
 						{#each doneToday as apt (apt.id)}
 							<li class="flex items-center gap-3 px-4 py-2 text-sm">
 								<span class="w-14 shrink-0 text-xs tabular-nums text-ink-500">{formatTime(apt.scheduledAt)}</span>
@@ -301,10 +301,10 @@
 		{/if}
 	{:else}
 		{#if dayAppointments.length === 0}
-			<EmptyState icon="🗓" title={$t('queue.noAppointments')} />
+			<EmptyState icon="calendar" title={$t('queue.noAppointments')} />
 		{:else}
 			<div class="card overflow-hidden">
-				<ul class="divide-y divide-ink-800">
+				<ul class="divide-y divide-stone-200">
 					{#each dayAppointments as apt (apt.id)}
 						<li class="flex items-center gap-3 p-3">
 							<div class="w-16 shrink-0 text-center">
@@ -317,15 +317,15 @@
 							</div>
 							<span
 								class="badge shrink-0"
-								class:bg-jade-600={apt.status === 'done' || apt.status === 'in_service'}
+								class:bg-sage-600={apt.status === 'done' || apt.status === 'in_service'}
 								class:text-white={apt.status === 'done' || apt.status === 'in_service'}
-								class:bg-ink-700={apt.status !== 'done' && apt.status !== 'in_service'}
-								class:text-ink-300={apt.status !== 'done' && apt.status !== 'in_service'}
+								class:bg-ink-200={apt.status !== 'done' && apt.status !== 'in_service'}
+								class:text-ink-600={apt.status !== 'done' && apt.status !== 'in_service'}
 							>
 								{$t(`queue.status.${apt.status}` as 'queue.status.booked')}
 							</span>
 							<span class="w-24 shrink-0 text-right text-sm font-semibold tabular-nums">{formatIDR(priceOf(apt))}</span>
-							<button class="shrink-0 p-1 text-ink-600 hover:text-rust-400" onclick={() => remove(apt)} title={$t('common.delete')}>
+							<button class="shrink-0 p-1 text-ink-600 hover:text-red-400" onclick={() => remove(apt)} title={$t('common.delete')}>
 								<Icon name="trash" size={14} />
 							</button>
 						</li>
@@ -345,18 +345,18 @@
 	<div class="space-y-3">
 		<div class="grid gap-3 sm:grid-cols-2">
 			<div>
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="a-name">{$t('queue.customer')}</label>
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="a-name">{$t('queue.customer')}</label>
 				<input id="a-name" bind:value={form.customerName} placeholder="Budi Santoso" />
 			</div>
 			<div>
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="a-phone">{$t('customers.phone')}</label>
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="a-phone">{$t('customers.phone')}</label>
 				<input id="a-phone" bind:value={form.customerPhone} inputmode="tel" placeholder="0812-3456-7890" />
 			</div>
 		</div>
 
 		<div class="grid gap-3 sm:grid-cols-2">
 			<div>
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="a-barber">{$t('queue.pickBarber')}</label>
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="a-barber">{$t('queue.pickBarber')}</label>
 				<select id="a-barber" bind:value={form.barberId}>
 					{#each branchBarbers as barber (barber.id)}
 						<option value={barber.id}>{barber.displayName}</option>
@@ -364,19 +364,19 @@
 				</select>
 			</div>
 			<div>
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="a-when">{$t('queue.chooseDate')}</label>
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="a-when">{$t('queue.chooseDate')}</label>
 				<input id="a-when" type="datetime-local" bind:value={form.scheduledAt} />
 			</div>
 		</div>
 
 		<div>
-			<p class="mb-1.5 text-xs font-medium text-ink-400">{$t('queue.pickService')}</p>
+			<p class="mb-1.5 text-xs font-medium text-ink-500">{$t('queue.pickService')}</p>
 			<div class="grid max-h-52 gap-1.5 overflow-y-auto sm:grid-cols-2">
 				{#each services as service (service.id)}
 					<label
 						class="flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-sm transition {form.serviceIds.includes(service.id)
-							? 'border-brass-500 bg-brass-500/10'
-							: 'border-ink-700'}"
+							? 'border-walnut-500 bg-walnut-500/10'
+							: 'border-stone-300'}"
 					>
 						<input
 							type="checkbox"
@@ -392,14 +392,14 @@
 		</div>
 
 		<div>
-			<label class="mb-1 block text-xs font-medium text-ink-400" for="a-notes">{$t('queue.notes')}</label>
+			<label class="mb-1 block text-xs font-medium text-ink-500" for="a-notes">{$t('queue.notes')}</label>
 			<textarea id="a-notes" rows="2" bind:value={form.notes}></textarea>
 		</div>
 
 		{#if form.serviceIds.length > 0}
-			<div class="flex items-center justify-between rounded-lg bg-ink-800 px-3 py-2 text-sm">
-				<span class="text-ink-400">{formatDuration(formDuration)}</span>
-				<span class="font-semibold tabular-nums text-brass-400">{formatIDR(formTotal)}</span>
+			<div class="flex items-center justify-between rounded-lg bg-ivory-200 px-3 py-2 text-sm">
+				<span class="text-ink-500">{formatDuration(formDuration)}</span>
+				<span class="font-semibold tabular-nums text-walnut-500">{formatIDR(formTotal)}</span>
 			</div>
 		{/if}
 	</div>

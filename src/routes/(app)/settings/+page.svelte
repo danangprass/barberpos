@@ -91,14 +91,14 @@
 <div class="max-w-3xl space-y-4 p-4 sm:p-6">
 	<div>
 		<h1 class="text-xl font-semibold">{$t('settings.title')}</h1>
-		<p class="text-sm text-ink-400">{$session.staff?.displayName} · {$t(`role.${$session.role}` as 'role.owner')}</p>
+		<p class="text-sm text-ink-500">{$session.staff?.displayName} · {$t(`role.${$session.role}` as 'role.owner')}</p>
 	</div>
 
 	<!-- Account -->
 	<section class="card p-4">
 		<h2 class="mb-3 text-sm font-semibold">{$t('login.title')}</h2>
 		<div class="flex flex-wrap items-center gap-3">
-			<div class="grid size-11 place-items-center rounded-full bg-ink-700 text-sm font-semibold">
+			<div class="grid size-11 place-items-center rounded-full bg-ink-200 text-sm font-semibold">
 				{$session.staff?.displayName.slice(0, 2).toUpperCase()}
 			</div>
 			<div class="min-w-0 flex-1">
@@ -118,10 +118,10 @@
 			{#each [{ code: 'id', label: 'Bahasa Indonesia' }, { code: 'en', label: 'English' }] as option (option.code)}
 				<button
 					class="btn flex-1"
-					class:bg-brass-500={$locale === option.code}
+					class:bg-walnut-500={$locale === option.code}
 					class:text-ink-950={$locale === option.code}
-					class:bg-ink-800={$locale !== option.code}
-					class:text-ink-300={$locale !== option.code}
+					class:bg-ivory-200={$locale !== option.code}
+					class:text-ink-600={$locale !== option.code}
 					onclick={() => ($locale = option.code as 'id' | 'en')}
 				>
 					{option.label}
@@ -132,10 +132,10 @@
 
 	<!-- Connectivity + outbox -->
 	<section class="card overflow-hidden">
-		<header class="flex items-center justify-between border-b border-ink-700 px-4 py-3">
+		<header class="flex items-center justify-between border-b border-stone-300 px-4 py-3">
 			<h2 class="text-sm font-semibold">{$t('settings.connectivity')}</h2>
 			<span
-				class="badge {$online ? 'bg-jade-600 text-white' : 'bg-brass-600 text-white'}"
+				class="badge {$online ? 'bg-sage-600 text-white' : 'bg-amber-600 text-white'}"
 			>
 				{$online ? $t('settings.online') : $t('settings.offline')}
 			</span>
@@ -143,23 +143,23 @@
 
 		<div class="space-y-3 p-4">
 			<label class="flex items-center justify-between gap-3 text-sm">
-				<span class="text-ink-300">{$t('settings.simulateOffline')}</span>
+				<span class="text-ink-600">{$t('settings.simulateOffline')}</span>
 				<input type="checkbox" class="!w-5 !h-5" bind:checked={$forceOffline} />
 			</label>
 
 			<div class="flex flex-wrap items-center gap-2 text-xs text-ink-500">
-				<span>{$t('settings.device')}: <code class="font-mono text-ink-300">{deviceId()}</code></span>
+				<span>{$t('settings.device')}: <code class="font-mono text-ink-600">{deviceId()}</code></span>
 				{#if $lastSyncAt}
 					<span>· {$t('settings.syncNow')}: {formatDateTime($lastSyncAt, $intlLocale)}</span>
 				{/if}
 			</div>
 
-			<div class="flex items-center justify-between gap-2 rounded-lg bg-ink-800 px-3 py-2">
-				<span class="text-sm text-ink-300">
+			<div class="flex items-center justify-between gap-2 rounded-lg bg-ivory-200 px-3 py-2">
+				<span class="text-sm text-ink-600">
 					{$t('settings.pendingSales')}
 				</span>
 				<span class="flex items-center gap-2">
-					<span class="text-sm font-semibold tabular-nums" class:text-brass-400={$outbox.length > 0} class:text-jade-400={$outbox.length === 0}>
+					<span class="text-sm font-semibold tabular-nums" class:text-walnut-500={$outbox.length > 0} class:text-sage-500={$outbox.length === 0}>
 						{$outbox.length}
 					</span>
 					<button class="btn btn-ghost px-2.5 py-1 text-xs" onclick={() => drainOutbox()} disabled={$syncing || !$online || $outbox.length === 0}>
@@ -170,15 +170,15 @@
 			</div>
 
 			{#if queuedAges.length === 0}
-				<p class="flex items-center gap-2 text-xs text-jade-400">
+				<p class="flex items-center gap-2 text-xs text-sage-500">
 					<Icon name="check" size={14} /> {$t('settings.allSynced')}
 				</p>
 			{:else}
-				<ul class="divide-y divide-ink-800 rounded-lg border border-ink-700">
+				<ul class="divide-y divide-stone-200 rounded-lg border border-stone-300">
 					{#each queuedAges as entry (entry.clientId)}
 						<li class="flex items-center gap-3 px-3 py-2 text-xs">
-							<Icon name="offline" size={13} class="shrink-0 text-brass-500" />
-							<span class="min-w-0 flex-1 truncate font-mono text-ink-400">{entry.clientId}</span>
+							<Icon name="offline" size={13} class="shrink-0 text-walnut-500" />
+							<span class="min-w-0 flex-1 truncate font-mono text-ink-500">{entry.clientId}</span>
 							<span class="shrink-0 text-ink-500">{entry.age}</span>
 							<span class="shrink-0 text-ink-600">{$t('settings.attempts')} {entry.attempts}</span>
 						</li>
@@ -187,8 +187,8 @@
 			{/if}
 
 			{#if pendingSales > 0}
-				<p class="text-xs text-brass-400">
-					{pendingSales} struk luring menunggu nomor final.
+				<p class="text-xs text-amber-400">
+					{pendingSales} {$t('settings.pendingSales')} {$t('settings.waitingReceipt')}
 				</p>
 			{/if}
 		</div>
@@ -201,15 +201,15 @@
 
 		<div class="space-y-3">
 			<div>
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="set-header">{$t('settings.receiptHeader')}</label>
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="set-header">{$t('settings.receiptHeader')}</label>
 				<textarea id="set-header" rows="3" bind:value={form.receiptHeader}></textarea>
 			</div>
 			<div>
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="set-footer">{$t('settings.receiptFooter')}</label>
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="set-footer">{$t('settings.receiptFooter')}</label>
 				<textarea id="set-footer" rows="2" bind:value={form.receiptFooter}></textarea>
 			</div>
 			<div class="max-w-48">
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="set-low">{$t('settings.lowStockDefault')}</label>
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="set-low">{$t('settings.lowStockDefault')}</label>
 				<input id="set-low" type="number" min="0" bind:value={form.lowStockDefault} />
 			</div>
 		</div>
@@ -219,7 +219,7 @@
 				{saved ? $t('settings.saved') : $t('settings.saveSettings')}
 			</button>
 			{#if saved}
-				<span class="flex items-center gap-1.5 text-xs text-jade-400">
+				<span class="flex items-center gap-1.5 text-xs text-sage-500">
 					<Icon name="check" size={14} /> {$t('settings.saved')}
 				</span>
 			{/if}
@@ -230,27 +230,27 @@
 	<section class="card border-dashed p-4">
 		<h2 class="mb-1 text-sm font-semibold">{$t('settings.backend')}</h2>
 		<p class="mb-3 flex flex-wrap items-center gap-2 text-xs text-ink-500">
-			<span class="badge {backendName === 'firebase' ? 'bg-jade-600 text-white' : 'bg-brass-600 text-white'}">
+			<span class="badge {backendName === 'firebase' ? 'bg-sage-600 text-white' : 'bg-amber-600 text-white'}">
 				{backendName === 'firebase' ? 'Firebase' : 'Mock'}
 			</span>
 			{backendName === 'firebase' ? $t('settings.backendFirebase') : $t('settings.backendMock')}
 		</p>
 
 		{#if backendName === 'firebase'}
-			<div class="mb-3 rounded-lg border border-ink-800 p-3">
+			<div class="mb-3 rounded-lg border border-stone-200 p-3">
 				<div class="mb-1 flex items-center justify-between gap-2">
-					<span class="text-xs font-medium text-ink-400">{$t('settings.backendHealth')}</span>
-					<button class="text-xs text-brass-400 underline" onclick={() => checkBackend()}>
+					<span class="text-xs font-medium text-ink-500">{$t('settings.backendHealth')}</span>
+					<button class="text-xs text-walnut-500 underline" onclick={() => checkBackend()}>
 						{$t('common.retry')}
 					</button>
 				</div>
 				{#if backendStatus === 'ok'}
-					<p class="text-xs text-jade-400">
+					<p class="text-xs text-sage-500">
 						{$t('settings.backendReady')}
 						{backendDetail ? `· ${backendDetail}` : ''}
 					</p>
 				{:else if backendStatus === 'down'}
-					<p class="text-xs text-rust-400">{$t('settings.backendDown')}</p>
+					<p class="text-xs text-red-400">{$t('settings.backendDown')}</p>
 				{:else}
 					<p class="text-xs text-ink-500">{$t('settings.backendChecking')}</p>
 				{/if}
@@ -260,8 +260,8 @@
 		{#if backendName === 'firebase'}
 			<h3 class="mb-1 text-sm font-semibold">{$t('settings.migration')}</h3>
 			<p class="mb-3 text-xs leading-relaxed text-ink-500">{$t('settings.migrationHint')}</p>
-			<div class="rounded-lg border border-ink-800 bg-ink-900 p-3">
-				<code class="block text-xs text-brass-400">node scripts/seed-live.cjs</code>
+			<div class="rounded-lg border border-stone-200 bg-paper p-3">
+				<code class="block text-xs text-walnut-500">node scripts/seed-live.cjs</code>
 				<p class="mt-2 text-xs leading-relaxed text-ink-500">{$t('settings.migrationLocal')}</p>
 			</div>
 		{:else}

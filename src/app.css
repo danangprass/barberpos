@@ -1,40 +1,79 @@
 @import 'tailwindcss';
 
 @theme {
-	--color-ink-950: #0a0d12;
-	--color-ink-900: #10141b;
-	--color-ink-850: #161b24;
-	--color-ink-800: #1d232e;
-	--color-ink-700: #2a313e;
-	--color-ink-600: #3b4453;
-	--color-ink-500: #5a6478;
-	--color-ink-400: #8792a6;
-	--color-ink-300: #b3bccb;
-	--color-ink-200: #d7dde6;
-	--color-ink-100: #eef1f6;
+	/* ── Obsidian grayscale — warm, deep, masculine ── */
+	/* Used for: sidebar background, dark surfaces, strong text */
+	--color-ink-950: #171715;  /* Obsidian */
+	--color-ink-900: #1d2123;
+	--color-ink-850: #262b2e;
+	--color-ink-800: #31373a;
+	--color-ink-700: #434a4e;
+	--color-ink-600: #596165;
+	--color-ink-500: #6f797d;
+	--color-ink-400: #889296;
+	--color-ink-300: #a2adaf;
+	--color-ink-200: #bcc6c8;
+	--color-ink-100: #d6e0e2; /* light text on dark backgrounds */
 
-	--color-brass-300: #f5d999;
-	--color-brass-400: #e9c16f;
-	--color-brass-500: #d9a441;
-	--color-brass-600: #b98528;
-	--color-brass-700: #8f651c;
+	/* ── Warm Ivory — main workspace background ── */
+	--color-ivory-100: #F5F1E8;
+	--color-ivory-200: #f0ebe0;
+	--color-ivory-300: #e6e0d0;
 
-	--color-jade-400: #34d399;
-	--color-jade-600: #059669;
-	--color-rust-400: #f87171;
-	--color-rust-600: #dc2626;
-	--color-azure-400: #60a5fa;
-	--color-azure-600: #2563eb;
+	/* ── Clean White — card surfaces, transaction panels ── */
+	--color-paper: #FFFFFF;
 
+	/* ── Walnut — primary brand accent ── */
+	--color-walnut-300: #a67c5c;
+	--color-walnut-400: #8d6648;
+	--color-walnut-500: #6B4935;
+	--color-walnut-600: #5a3d2d;
+	--color-walnut-700: #4a3224;
+	--color-walnut-800: #3d291f;
+	--color-walnut-900: #312318;
+
+	/* ── Muted Brass — secondary premium highlights ── */
+	--color-brass-300: #D4C090;
+	--color-brass-400: #c0ab6d;
+	--color-brass-500: #B69A68;
+	--color-brass-600: #9e8252;
+	--color-brass-700: #866c3d;
+
+	/* ── Stone — borders, dividers, neutral surfaces ── */
+	--color-stone-200: #DCD6CB;
+	--color-stone-300: #c5b9a9;
+	--color-stone-400: #b3a593;
+
+	/* ── Sage — completed, positive, available ── */
+	--color-sage-300: #7ba874;
+	--color-sage-400: #71836D;
+	--color-sage-500: #63725f;
+	--color-sage-600: #52604c;
+
+	/* ── Amber — waiting, attention, pending ── */
+	--color-amber-300: #e8c26d;
+	--color-amber-400: #D5A14A;
+	--color-amber-500: #c0903e;
+	--color-amber-600: #a87a33;
+
+	/* ── Mute Red — destructive, failed, urgent ── */
+	--color-red-300: #c96964;
+	--color-red-400: #B95048;
+	--color-red-500: #a4453e;
+	--color-red-600: #8d3a34;
+
+	/* ── Typography ── */
 	--font-sans: 'Inter var', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--font-display: 'Manrope', 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
 	--font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
 }
 
 @layer base {
 	html {
-		background-color: var(--color-ink-950);
-		color: var(--color-ink-100);
+		background-color: var(--color-ivory-100);
+		color: var(--color-ink-950);
 		font-family: var(--font-sans);
+		-webkit-font-smoothing: antialiased;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -53,19 +92,20 @@
 	input,
 	select,
 	textarea {
-		background-color: var(--color-ink-800);
-		border: 1px solid var(--color-ink-600);
+		background-color: var(--color-paper);
+		border: 1px solid var(--color-stone-300);
 		border-radius: 0.5rem;
 		padding: 0.5rem 0.75rem;
-		color: inherit;
+		color: var(--color-ink-900);
 		font-size: 0.9375rem;
 		width: 100%;
+		transition: border-color 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
 	}
 
 	input:focus,
 	select:focus,
 	textarea:focus {
-		outline: 2px solid var(--color-brass-500);
+		outline: 2px solid var(--color-walnut-400);
 		outline-offset: -1px;
 		border-color: transparent;
 	}
@@ -78,16 +118,17 @@
 	/* Thermal receipt rendering */
 	.receipt-paper {
 		font-family: var(--font-mono);
-		background: #fff;
-		color: #000;
+		background: var(--color-paper);
+		color: var(--color-ink-950);
 	}
 }
 
 @layer components {
 	.card {
-		background-color: var(--color-ink-850);
-		border: 1px solid var(--color-ink-700);
+		background-color: var(--color-paper);
+		border: 1px solid var(--color-stone-200);
 		border-radius: 0.75rem;
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
 	}
 
 	.btn {
@@ -96,44 +137,79 @@
 		justify-content: center;
 		gap: 0.5rem;
 		border-radius: 0.5rem;
-		padding: 0.5rem 1rem;
+		padding: 0.5625rem 1.125rem;
 		font-weight: 600;
 		font-size: 0.875rem;
-		transition: background-color 120ms ease, border-color 120ms ease, opacity 120ms ease;
+		transition: background-color 120ms ease, border-color 120ms ease, opacity 120ms ease, box-shadow 120ms ease, transform 75ms ease;
 		border: 1px solid transparent;
+		min-height: 40px;
 	}
 
 	.btn:disabled {
 		opacity: 0.45;
 	}
 
+	.btn:active:not(:disabled) {
+		transform: scale(0.97);
+	}
+
 	.btn-primary {
-		background-color: var(--color-brass-500);
-		color: var(--color-ink-950);
+		background-color: var(--color-walnut-500);
+		color: var(--color-paper);
+		border-color: var(--color-walnut-500);
 	}
 
 	.btn-primary:hover:not(:disabled) {
-		background-color: var(--color-brass-400);
+		background-color: var(--color-walnut-400);
+		border-color: var(--color-walnut-400);
+	}
+
+	.btn-primary:active:not(:disabled) {
+		background-color: var(--color-walnut-600);
+		border-color: var(--color-walnut-600);
 	}
 
 	.btn-ghost {
-		background-color: var(--color-ink-800);
-		color: var(--color-ink-200);
-		border-color: var(--color-ink-600);
+		background-color: var(--color-ivory-200);
+		color: var(--color-ink-600);
+		border-color: var(--color-stone-300);
 	}
 
 	.btn-ghost:hover:not(:disabled) {
-		background-color: var(--color-ink-700);
+		background-color: var(--color-ivory-300);
+		color: var(--color-walnut-600);
+	}
+
+	.btn-ghost:active:not(:disabled) {
+		background-color: var(--color-stone-300);
+	}
+
+	.btn-outline {
+		background-color: transparent;
+		color: var(--color-walnut-500);
+		border-color: var(--color-walnut-500);
+	}
+
+	.btn-outline:hover:not(:disabled) {
+		background-color: color-mix(in oklab, var(--color-walnut-600) 12%, transparent);
+	}
+
+	.btn-outline:active:not(:disabled) {
+		background-color: color-mix(in oklab, var(--color-walnut-600) 18%, transparent);
 	}
 
 	.btn-danger {
 		background-color: transparent;
-		color: var(--color-rust-400);
-		border-color: color-mix(in oklab, var(--color-rust-600) 50%, transparent);
+		color: var(--color-red-400);
+		border-color: color-mix(in oklab, var(--color-red-500) 50%, transparent);
 	}
 
 	.btn-danger:hover:not(:disabled) {
-		background-color: color-mix(in oklab, var(--color-rust-600) 18%, transparent);
+		background-color: color-mix(in oklab, var(--color-red-500) 18%, transparent);
+	}
+
+	.btn-danger:active:not(:disabled) {
+		background-color: color-mix(in oklab, var(--color-red-500) 25%, transparent);
 	}
 
 	.badge {
@@ -141,9 +217,30 @@
 		align-items: center;
 		gap: 0.25rem;
 		border-radius: 9999px;
-		padding: 0.125rem 0.5rem;
+		padding: 0.1875rem 0.5625rem;
 		font-size: 0.6875rem;
 		font-weight: 600;
 		letter-spacing: 0.02em;
+	}
+
+	.status-dot {
+		display: inline-block;
+		width: 0.4375rem;
+		height: 0.4375rem;
+		border-radius: 9999px;
+	}
+
+	.skeleton {
+		@apply animate-pulse rounded bg-stone-200;
+	}
+
+	/* Sidebar navigation — walnut accents on dark obsidian */
+	.nav-active {
+		background-color: color-mix(in oklab, var(--color-walnut-900) 15%, transparent);
+		color: var(--color-walnut-400);
+	}
+	.nav-inactive:hover {
+		background-color: color-mix(in oklab, var(--color-walnut-900) 10%, transparent);
+		color: var(--color-ink-200);
 	}
 }

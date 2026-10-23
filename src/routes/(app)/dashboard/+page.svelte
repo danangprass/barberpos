@@ -50,7 +50,7 @@
 	<div class="flex flex-wrap items-center justify-between gap-2">
 		<div>
 			<h1 class="text-xl font-semibold">{$t('nav.dashboard')}</h1>
-			<p class="text-sm text-ink-400">{$t('common.today')} · {$t(`role.${$session.role}` as 'role.owner')}</p>
+			<p class="text-sm text-ink-500">{$t('common.today')} · {$t(`role.${$session.role}` as 'role.owner')}</p>
 		</div>
 		<button class="btn btn-primary" onclick={() => goto('/sell')}>
 			<Icon name="cart" size={16} /> {$t('nav.sell')}
@@ -58,35 +58,35 @@
 	</div>
 
 	<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-		<StatCard label={$t('dashboard.todaySales')} value={formatIDR(summary.gross)} tone="brass" icon="◈" />
+		<StatCard label={$t('dashboard.todaySales')} value={formatIDR(summary.gross)} tone="walnut" icon="chart" />
 		<StatCard label={$t('dashboard.transactions')} value={String(summary.count)} hint={`${summary.serviceCount} svc · ${summary.productCount} prd`} />
 		<StatCard label={$t('dashboard.averageTicket')} value={formatIDR(summary.avgTicket)} />
 		<StatCard
 			label={$t('dashboard.inQueue')}
 			value={`${inService} / ${waiting}`}
 			hint={`${$t('dashboard.waiting')}: ${waiting}`}
-			tone={inService > 0 ? 'jade' : 'default'}
-			icon="◷"
+			tone={inService > 0 ? 'sage' : 'default'}
+			icon="clock"
 		/>
 	</div>
 
 	<div class="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
 		<!-- Recent sales -->
 		<section class="card overflow-hidden">
-			<header class="flex items-center justify-between border-b border-ink-700 px-4 py-3">
+			<header class="flex items-center justify-between border-b border-stone-300 px-4 py-3">
 				<h2 class="text-sm font-semibold">{$t('dashboard.recentSales')}</h2>
-				<button class="text-xs text-brass-400 hover:underline" onclick={() => goto('/reports')}>
+				<button class="text-xs text-walnut-500 hover:underline" onclick={() => goto('/reports')}>
 					{$t('dashboard.viewAll')} →
 				</button>
 			</header>
 			{#if recent.length === 0}
-				<EmptyState icon="◔" title={$t('dashboard.noSales')} />
+				<EmptyState icon="chart" title={$t('dashboard.noSales')} />
 			{:else}
-				<ul class="divide-y divide-ink-800">
+				<ul class="divide-y divide-stone-200">
 					{#each recent as sale (sale.id)}
 						<li>
 							<button
-								class="flex w-full items-center gap-3 px-4 py-2.5 text-left transition hover:bg-ink-800"
+								class="flex w-full items-center gap-3 px-4 py-2.5 text-left transition hover:bg-ivory-200"
 								onclick={() => (reprinting = sale)}
 							>
 								<div class="min-w-0 flex-1">
@@ -103,7 +103,7 @@
 								<span class="shrink-0 text-xs text-ink-500">{formatTime(sale.soldAt)}</span>
 								<span class="w-24 shrink-0 text-right text-sm font-semibold tabular-nums">{formatIDR(sale.total)}</span>
 								{#if sale.syncState === 'pending_sync'}
-									<span class="badge bg-brass-600/20 text-brass-400" title={$t('settings.pendingSales')}>⏳</span>
+									<span class="badge bg-walnut-600/20 text-walnut-500" title={$t('settings.pendingSales')}>⏳</span>
 								{/if}
 							</button>
 						</li>
@@ -115,16 +115,16 @@
 		<div class="space-y-4">
 			<!-- Today's bookings -->
 			<section class="card overflow-hidden">
-				<header class="flex items-center justify-between border-b border-ink-700 px-4 py-3">
+				<header class="flex items-center justify-between border-b border-stone-300 px-4 py-3">
 					<h2 class="text-sm font-semibold">{$t('dashboard.bookedToday')}</h2>
-					<button class="text-xs text-brass-400 hover:underline" onclick={() => goto('/queue')}>
+					<button class="text-xs text-walnut-500 hover:underline" onclick={() => goto('/queue')}>
 						{$t('nav.queue')} →
 					</button>
 				</header>
 				{#if todayAppointments.length === 0}
-					<EmptyState icon="🗓" title={$t('queue.noAppointments')} />
+					<EmptyState icon="calendar" title={$t('queue.noAppointments')} />
 				{:else}
-					<ul class="divide-y divide-ink-800">
+					<ul class="divide-y divide-stone-200">
 						{#each todayAppointments.slice(0, 5) as apt (apt.id)}
 							<li class="flex items-center gap-3 px-4 py-2.5">
 								<span class="w-12 shrink-0 text-xs tabular-nums text-ink-500">{formatTime(apt.scheduledAt)}</span>
@@ -134,10 +134,10 @@
 								</div>
 								<span
 									class="badge {apt.status === 'in_service'
-										? 'bg-jade-600 text-white'
+										? 'bg-sage-600 text-white'
 										: apt.status === 'arrived' || apt.status === 'queued'
-											? 'bg-azure-600 text-white'
-											: 'bg-ink-700 text-ink-300'}"
+											? 'bg-brass-600 text-white'
+											: 'bg-ink-200 text-ink-600'}"
 								>
 									{$t(`queue.status.${apt.status}` as 'queue.status.booked')}
 								</span>
@@ -149,21 +149,21 @@
 
 			<!-- Low stock -->
 			<section class="card overflow-hidden">
-				<header class="flex items-center justify-between border-b border-ink-700 px-4 py-3">
+				<header class="flex items-center justify-between border-b border-stone-300 px-4 py-3">
 					<h2 class="text-sm font-semibold">{$t('dashboard.lowStock')}</h2>
-					<button class="text-xs text-brass-400 hover:underline" onclick={() => goto('/catalog')}>
+					<button class="text-xs text-walnut-500 hover:underline" onclick={() => goto('/catalog')}>
 						{$t('nav.catalog')} →
 					</button>
 				</header>
 				{#if lowStock.length === 0}
-					<EmptyState icon="✓" title="Stok aman" />
+					<EmptyState icon="check" title={$t('dashboard.stockOk')} />
 				{:else}
-					<ul class="divide-y divide-ink-800">
+					<ul class="divide-y divide-stone-200">
 						{#each lowStock as item (item.id)}
 							<li class="flex items-center gap-3 px-4 py-2.5">
-								<Icon name="alert" size={15} class="text-brass-500" />
+								<Icon name="alert" size={15} class="text-walnut-500" />
 								<span class="min-w-0 flex-1 truncate text-sm">{item.name}</span>
-								<span class="text-sm font-semibold tabular-nums" class:text-rust-400={(item.stock ?? 0) <= 0}>
+								<span class="text-sm font-semibold tabular-nums" class:text-red-400={(item.stock ?? 0) <= 0}>
 									{item.stock ?? 0}
 								</span>
 							</li>

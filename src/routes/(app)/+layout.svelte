@@ -61,18 +61,19 @@
 	onMount(() => {
 		void drainOutbox();
 	});
-
 </script>
 
-<div class="flex h-dvh overflow-hidden bg-ink-950">
+<div class="flex h-dvh overflow-hidden bg-ivory-100">
 	{#if $currentStaff}
-		<!-- Desktop sidebar -->
-		<aside class="hidden w-60 shrink-0 flex-col border-e border-ink-800 bg-ink-900 lg:flex">
-			<div class="flex items-center gap-2.5 border-b border-ink-800 px-5 py-4">
-				<div class="grid size-9 place-items-center rounded-lg bg-brass-500 font-bold text-ink-950">P</div>
+		<!-- Desktop sidebar — dark obsidian -->
+		<aside class="hidden w-64 shrink-0 flex-col border-e border-stone-200 bg-ink-950 lg:flex">
+			<div class="flex items-center gap-2.5 border-b border-stone-200 px-5 py-4">
+				<div class="grid size-9 place-items-center rounded-lg bg-walnut-600">
+					<Icon name="scissors" size={16} class="text-paper" />
+				</div>
 				<div class="min-w-0">
-					<p class="truncate text-sm font-semibold">{$t('app.name')}</p>
-					<p class="truncate text-[11px] text-ink-500">{activeBranch?.name ?? '—'}</p>
+					<p class="truncate text-sm font-semibold text-ink-100">{$t('app.name')}</p>
+					<p class="truncate text-[11px] text-ink-400">{activeBranch?.name ?? '—'}</p>
 				</div>
 			</div>
 
@@ -80,17 +81,15 @@
 				{#each visibleNav as item (item.href)}
 					<a
 						href={item.href}
-						class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition"
-						class:bg-ink-800={page.url.pathname.startsWith(item.href)}
-						class:text-brass-400={page.url.pathname.startsWith(item.href)}
+						class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition nav-inactive"
+						class:nav-active={page.url.pathname.startsWith(item.href)}
+						class:text-walnut-400={page.url.pathname.startsWith(item.href)}
 						class:text-ink-400={!page.url.pathname.startsWith(item.href)}
-						class:hover:bg-ink-850={!page.url.pathname.startsWith(item.href)}
-						class:hover:text-ink-200={!page.url.pathname.startsWith(item.href)}
 					>
 						<Icon name={item.icon} size={18} />
 						{$t(item.label)}
 						{#if item.href === '/settings' && $pendingCount > 0}
-							<span class="ms-auto rounded-full bg-brass-500 px-1.5 text-[10px] font-bold text-ink-950">
+							<span class="ms-auto rounded-full bg-red-400 px-1.5 text-[10px] font-bold text-paper">
 								{$pendingCount}
 							</span>
 						{/if}
@@ -98,28 +97,27 @@
 				{/each}
 			</nav>
 
-			<div class="border-t border-ink-800 p-3">
+			<div class="border-t border-stone-200 p-3">
 				<button
-					class="flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left transition hover:bg-ink-850"
+					class="flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left transition hover:bg-walnut-900/10"
 					onclick={() => goto('/login')}
 					title={$t('login.signOut')}
-				>
-					<div class="grid size-9 shrink-0 place-items-center rounded-full bg-ink-700 text-xs font-semibold">
+				>					<div class="grid size-9 shrink-0 place-items-center rounded-full bg-ink-700 text-xs font-semibold text-ink-200">
 						{$currentStaff.displayName.slice(0, 2).toUpperCase()}
 					</div>
 					<div class="min-w-0 flex-1">
-						<p class="truncate text-sm font-medium">{$currentStaff.displayName}</p>
-						<p class="text-[11px] text-ink-500">{$t(`role.${$currentStaff.role}` as 'role.owner')}</p>
+						<p class="truncate text-sm font-medium text-ink-100">{$currentStaff.displayName}</p>
+						<p class="text-[11px] text-ink-400">{$t(`role.${$currentStaff.role}` as 'role.owner')}</p>
 					</div>
-					<Icon name="logout" size={16} class="text-ink-500" />
+					<Icon name="logout" size={16} class="text-ink-400" />
 				</button>
 			</div>
 		</aside>
 	{/if}
 
-	<!-- Main column -->
+	<!-- Main column — warm light workspace -->
 	<div class="flex min-w-0 flex-1 flex-col">
-		<header class="flex h-14 shrink-0 items-center gap-2 border-b border-ink-800 bg-ink-900 px-3 sm:px-4">
+		<header class="flex h-14 shrink-0 items-center gap-2 border-b border-stone-200 bg-paper px-3 sm:px-4">
 			<!-- Branch switcher -->
 			{#if myBranches.length > 0}
 				<select
@@ -135,7 +133,7 @@
 
 			<div class="ms-auto flex items-center gap-2">
 				{#if branchBarbers.length > 0}
-					<span class="hidden text-xs text-ink-500 sm:inline">
+					<span class="hidden text-xs text-ink-600 sm:inline">
 						{branchBarbers.length} barber
 					</span>
 				{/if}
@@ -157,7 +155,7 @@
 					</button>
 				{:else if $online}
 					<button
-						class="btn btn-ghost gap-1.5 px-2.5 py-1 text-xs text-jade-400"
+						class="btn btn-ghost gap-1.5 px-2.5 py-1 text-xs text-sage-500"
 						onclick={() => drainOutbox()}
 						title={$t('settings.syncNow')}
 					>
@@ -166,7 +164,7 @@
 					</button>
 				{:else}
 					<button
-						class="btn btn-ghost gap-1.5 border-brass-600/40 px-2.5 py-1 text-xs text-brass-400"
+						class="btn btn-ghost gap-1.5 border-walnut-600/40 px-2.5 py-1 text-xs text-walnut-500"
 						onclick={() => ($forceOffline = false)}
 						title={$t('settings.offline')}
 					>
@@ -182,7 +180,7 @@
 			</div>
 		</header>
 
-		<main class="min-h-0 flex-1 overflow-y-auto">
+		<main class="flex-1 overflow-y-auto bg-ivory-100 px-4 py-4 sm:px-6">
 			{@render children()}
 		</main>
 	</div>
@@ -190,23 +188,22 @@
 
 <!--
 	Mobile bottom bar.
-
 	Every destination is rendered, not a truncated slice: Reports and Customers
 	are as important as Sell on the shop floor, so the bar scrolls horizontally
 	on narrow screens instead of dropping items off the end.
 -->
-<nav class="fixed inset-x-0 bottom-0 z-30 flex overflow-x-auto border-t border-ink-800 bg-ink-900 lg:hidden">
+<nav class="fixed inset-x-0 bottom-0 z-30 flex overflow-x-auto border-t border-stone-200 bg-ink-950 lg:hidden">
 	{#each visibleNav as item (item.href)}
 		<a
 			href={item.href}
 			class="relative flex min-w-16 flex-1 flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-medium"
-			class:text-brass-400={page.url.pathname.startsWith(item.href)}
-			class:text-ink-500={!page.url.pathname.startsWith(item.href)}
+			class:text-walnut-400={page.url.pathname.startsWith(item.href)}
+			class:text-ink-400={!page.url.pathname.startsWith(item.href)}
 		>
 			<Icon name={item.icon} size={20} />
 			<span class="truncate">{item.href === '/settings' ? $t('app.short') : $t(item.label)}</span>
 			{#if item.href === '/settings' && $pendingCount > 0}
-				<span class="absolute top-1 end-2 rounded-full bg-brass-500 px-1 text-[9px] font-bold text-ink-950">
+				<span class="absolute top-1 end-2 rounded-full bg-red-400 px-1 text-[9px] font-bold text-paper">
 					{$pendingCount}
 				</span>
 			{/if}

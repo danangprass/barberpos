@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Modal from './Modal.svelte';
+	import Icon from './Icon.svelte';
 	import { t } from '#lib/i18n';
 	import { formatIDR } from '#lib/utils/format';
 	import type { Payment, PaymentMethod, Rupiah } from '#lib/types/domain';
@@ -74,42 +75,48 @@
 <svelte:window onkeydown={onKeydown} />
 
 <Modal {open} title={$t('sell.checkout')} subtitle={customerName} {onclose} width="max-w-lg">
-	<div class="mb-5 rounded-xl bg-ink-800 px-4 py-3 text-center">
-		<p class="text-xs tracking-wide text-ink-400 uppercase">{$t('common.total')}</p>
-		<p class="text-3xl font-semibold tabular-nums text-brass-400">{formatIDR(total)}</p>
+	<div class="mb-6 overflow-hidden rounded-xl border border-stone-300 bg-ivory-200 px-6 py-4 text-center">
+		<p class="text-xs tracking-wide text-ink-600 uppercase">{$t('common.total')}</p>
+		<p class="mt-1 text-4xl font-bold tabular-nums text-walnut-500">{formatIDR(total)}</p>
 	</div>
 
-	<div class="mb-5 grid grid-cols-2 gap-2">
+	<div class="mb-6 grid grid-cols-2 gap-3">
 		<button
-			class="btn h-14 text-base"
-			class:bg-brass-500={method === 'cash'}
-			class:text-ink-950={method === 'cash'}
-			class:bg-ink-800={method !== 'cash'}
-			class:text-ink-300={method !== 'cash'}
+			class="card flex h-16 cursor-pointer flex-col items-center justify-center gap-2 p-4 text-center transition-all duration-75 active:scale-95"
+			class:bg-walnut-600={method === 'cash'}
+			class:text-paper={method === 'cash'}
+			class:border-walnut-500={method === 'cash'}
+			class:bg-ivory-200={method !== 'cash'}
+			class:border-stone-300={method !== 'cash'}
+			class:text-ink-600={method !== 'cash'}
 			onclick={() => (method = 'cash')}
 		>
-			💵 {$t('sell.cash')}
+			<Icon name="money" size={20} />
+			<span class="text-sm font-medium">{$t('sell.cash')}</span>
 		</button>
 		<button
-			class="btn h-14 text-base"
-			class:bg-brass-500={method === 'qris'}
-			class:text-ink-950={method === 'qris'}
-			class:bg-ink-800={method !== 'qris'}
-			class:text-ink-300={method !== 'qris'}
+			class="card flex h-16 cursor-pointer flex-col items-center justify-center gap-2 p-4 text-center transition-all duration-75 active:scale-95"
+			class:bg-walnut-600={method === 'qris'}
+			class:text-paper={method === 'qris'}
+			class:border-walnut-500={method === 'qris'}
+			class:bg-ivory-200={method !== 'qris'}
+			class:border-stone-300={method !== 'qris'}
+			class:text-ink-600={method !== 'qris'}
 			onclick={() => (method = 'qris')}
 		>
-			📱 {$t('sell.qris')}
+			<Icon name="smartphone" size={20} />
+			<span class="text-sm font-medium">{$t('sell.qris')}</span>
 		</button>
 	</div>
 
 	{#if method === 'cash'}
-		<p class="mb-2 text-xs font-medium tracking-wide text-ink-400 uppercase">{$t('sell.quickCash')}</p>
+		<p class="mb-2 text-xs font-medium tracking-wide text-ink-600 uppercase">{$t('sell.quickCash')}</p>
 		<div class="mb-3 grid grid-cols-3 gap-2">
 			{#each QUICK as amount (amount)}
 				<button
 					class="btn btn-ghost h-11 text-sm"
-					class:border-brass-500={tendered === amount}
-					class:text-brass-400={tendered === amount}
+					class:border-walnut-500={tendered === amount}
+					class:text-walnut-500={tendered === amount}
 					onclick={() => chooseCash(amount)}
 				>
 					{formatIDR(amount)}
@@ -119,28 +126,28 @@
 
 		<button
 			class="btn btn-ghost w-full"
-			class:border-brass-500={exact}
-			class:text-brass-400={exact}
+			class:border-walnut-500={exact}
+			class:text-walnut-500={exact}
 			onclick={() => (tendered = total)}
 		>
 			{$t('common.total')}: {formatIDR(total)}
 		</button>
 
-		<div class="mt-4 flex items-center justify-between rounded-xl bg-ink-800 px-4 py-3">
-			<span class="text-sm text-ink-400">{$t('sell.change')}</span>
-			<span class="text-xl font-semibold tabular-nums" class:text-jade-400={change > 0} class:text-ink-300={change === 0}>
+		<div class="mt-4 flex items-center justify-between rounded-xl bg-ivory-200 px-4 py-3">
+			<span class="text-sm text-ink-600">{$t('sell.change')}</span>
+			<span class="text-xl font-semibold tabular-nums" class:text-sage-500={change > 0} class:text-ink-600={change === 0}>
 				{formatIDR(change)}
 			</span>
 		</div>
 
 		{#if tendered < total}
-			<p class="mt-2 text-xs text-rust-400">
+			<p class="mt-2 text-xs text-red-400">
 				{$t('sell.quickCash')}: {formatIDR(tendered)} · {$t('common.total')}: {formatIDR(total)}
 			</p>
 		{/if}
 	{:else}
-		<label class="mb-1 block text-xs font-medium tracking-wide text-ink-400 uppercase" for="qris-ref">
-			{$t('sell.qrisRef')} <span class="text-ink-600 normal-case">({$t('common.optional')})</span>
+		<label class="mb-1 block text-xs font-medium tracking-wide text-ink-600 uppercase" for="qris-ref">
+			{$t('sell.qrisRef')} <span class="text-ink-500 normal-case">({$t('common.optional')})</span>
 		</label>
 		<input
 			id="qris-ref"
@@ -150,10 +157,10 @@
 			oninput={() => (refError = false)}
 		/>
 		{#if refError}
-			<p class="mt-2 text-xs text-rust-400">{$t('sell.qrisRef')} *</p>
+			<p class="mt-2 text-xs text-red-400">{$t('sell.qrisRef')} *</p>
 		{/if}
-		<p class="mt-4 rounded-lg bg-ink-800 px-3 py-2.5 text-xs leading-relaxed text-ink-400">
-			Verifikasi pembayaran di aplikasi QRIS pelanggan, lalu catat kode referensinya di sini.
+		<p class="mt-4 rounded-lg bg-ivory-200 px-3 py-2.5 text-xs leading-relaxed text-ink-600">
+			{$t('sell.qrisHelp')}
 		</p>
 	{/if}
 
