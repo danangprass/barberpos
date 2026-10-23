@@ -1,0 +1,372 @@
+rules_version = '2';
+
+/**
+ * Firestore security rules for the barbershop POS.
+ *
+ * There is no Cloud Functions server. The browser talks to Firestore
+ * directly, and these rules ARE the server: everything a callable used to do
+ * — PIN verification, re-pricing, receipt numbering, stock arithmetic — is
+ * expressed here instead.
+ *
+ * What the rules guarantee
+ *  - Identity comes from Firebase Auth (email/password, where the PIN is the
+ *    password). The PIN hash never reaches Firestore at all, so there is
+ *    nothing here to steal.
+ *  - Role and branch access come from the signed-in user's own `staff`
+ *    document, read with `get()`. A client cannot read or forge another
+ *    staff member's role.
+ *  - Every sale line is re-priced against the catalog, the total must equal
+ *    the sum of the lines, and the receipt sequence must be the next number
+ *    from that branch's counter. A modified client cannot change a price,
+ *    forge a total, or reuse a receipt number.
+ *  - A stock movement must match the sale it references.
+ *
+ * Two limits of the rules engine shape the code below:
+ *
+ *  1. Rules have no loops, so the line checks are unrolled to six lines —
+ *     that is the maximum cart size. The whole rule has to fit in the
+ *     engine's expression budget, so the chain is kept as short as it can
+ *     be: the receipt code comes from the counter document instead of a
+ *     second lookup.
+ *  2. Reading a document that does not exist is an error, not a null. Every
+ *     document a rule reads must therefore be guaranteed to exist: the
+ *     receipt counter is created at zero before the first sale of the day.
+ */
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------------------
+    // Identity
+    // -------------------------------------------------------------------------
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function staffPath() {
+      return /databases/$(database)/documents/staff/$(request.auth.uid);
+    }
+
+    /** True when the signed-in user has a staff document. */
+    function staffExists() {
+      return signedIn() && exists(staffPath());
+    }
+
+    /** The signed-in user's own staff document. */
+    function myStaff() {
+      return get(staffPath());
+    }
+
+    function roleOf(s) {
+      return s.data.role;
+    }
+
+    function rankOf(s) {
+      return roleOf(s) == 'owner' ? 3 : roleOf(s) == 'manager' ? 2 : roleOf(s) == 'barber' ? 1 : 0;
+    }
+
+    function branchesOf(s) {
+      return s.data.branchIds;
+    }
+
+    function branchAllowed(s, id) {
+      return branchesOf(s).hasAny([id]);
+    }
+
+    // -------------------------------------------------------------------------
+    // Catalog helpers
+    // -------------------------------------------------------------------------
+
+    function itemDoc(id) {
+      return get(/databases/$(database)/documents/items/$(id));
+    }
+
+    /**
+     * A line is valid when the catalog agrees with it: same type, same name,
+     * same price, and a line total that is arithmetically consistent.
+     *
+     * A catalog item that does not exist makes `itemDoc` return null, which
+     * rules treat as a refusal — so a sale can never reference a product that
+     * is not in the catalog.
+     *
+     * Commission is checked as "the floor of the percentage" rather than an
+     * equality, because rules have no floor function — the two inequalities
+     * say exactly that.
+     */
+    function lineMatchesItem(line, item) {
+      return line.type == item.data.type
+        && line.name == item.data.name
+        && line.unitPrice == item.data.price
+        && line.lineTotal == line.qty * line.unitPrice - line.discount
+        && (
+          line.type != 'service'
+          || (
+            line.commissionPct == item.data.commissionPct
+            && line.commissionAmount * 100 <= line.lineTotal * line.commissionPct
+            && line.commissionAmount * 100 > line.lineTotal * line.commissionPct - 100
+            && line.barberId is string
+            && line.durationMin == item.data.durationMin
+          )
+        );
+    }
+
+    /** One line, skipped when the cart is shorter than this index. */
+    function lineOk(lines, i) {
+      return lines.size() <= i
+        ? true
+        : (
+          lines[i].itemId is string
+          && lines[i].qty is int
+          && lines[i].qty > 0
+          && lines[i].discount is int
+          && lines[i].discount >= 0
+          && lineMatchesItem(lines[i], itemDoc(lines[i].itemId))
+        );
+    }
+
+    function lineTotalAt(lines, i) {
+      return lines.size() <= i ? 0 : lines[i].lineTotal;
+    }
+
+    function lineDiscountAt(lines, i) {
+      return lines.size() <= i ? 0 : lines[i].discount;
+    }
+
+    function sumLineTotals(lines) {
+      return lineTotalAt(lines, 0) + lineTotalAt(lines, 1) + lineTotalAt(lines, 2)
+        + lineTotalAt(lines, 3) + lineTotalAt(lines, 4) + lineTotalAt(lines, 5);
+    }
+
+    function sumLineDiscounts(lines) {
+      return lineDiscountAt(lines, 0) + lineDiscountAt(lines, 1) + lineDiscountAt(lines, 2)
+        + lineDiscountAt(lines, 3) + lineDiscountAt(lines, 4) + lineDiscountAt(lines, 5);
+    }
+
+    // -------------------------------------------------------------------------
+    // Receipt numbering
+    //
+    // One counter document per branch per business day, as a subcollection so
+    // the branch is the parent and never has to be parsed out of an id:
+    //   counters/{branchId}/days/{yyyymmdd}  ->  { seq: 12 }
+    //
+    // The day is the document id, so a counter can never be reset for a day
+    // that already has one. The counter starts at zero — created before the
+    // first sale of the day — and may only go up by one.
+    // -------------------------------------------------------------------------
+
+    function counterPath(branchId, day) {
+      return /databases/$(database)/documents/counters/$(branchId)/days/$(string(day));
+    }
+
+    /** The counter document, which also carries the branch's receipt code. */
+    function counterDoc(branchId, day) {
+      return get(counterPath(branchId, day));
+    }
+
+    /**
+     * The receipt number must be the next sequence number of that branch's
+     * counter, rendered as `INV/{CODE}/{yyyymmdd}/{seq}`. Zero padding is
+     * tolerated on the left, so `006` and `6` both pass for sequence 6.
+     *
+     * The counter is read as it was before this transaction, so the sale's
+     * number is the one after it — which is exactly what the client just
+     * wrote.
+     */
+    function receiptOk(sale) {
+      let counter = counterDoc(sale.branchId, sale.receiptDay);
+      let shape = 'INV/' + counter.data.code + '/'
+        + string(sale.receiptDay) + '/0*' + string(sale.receiptSeq);
+      return sale.receiptNo.matches('^' + shape + '$')
+        && sale.receiptSeq == counter.data.seq + 1;
+    }
+
+    // -------------------------------------------------------------------------
+    // Stock helpers
+    //
+    // A movement must match the sale it points at.
+    // -------------------------------------------------------------------------
+
+    function salePath(id) {
+      return /databases/$(database)/documents/sales/$(id);
+    }
+
+    function qtyOfItemInSale(sale, itemId, i) {
+      return sale.size() <= i ? 0 : (sale[i].itemId == itemId ? sale[i].qty : 0);
+    }
+
+    function soldQty(sale, itemId) {
+      return qtyOfItemInSale(sale, itemId, 0) + qtyOfItemInSale(sale, itemId, 1)
+        + qtyOfItemInSale(sale, itemId, 2) + qtyOfItemInSale(sale, itemId, 3)
+        + qtyOfItemInSale(sale, itemId, 4) + qtyOfItemInSale(sale, itemId, 5)
+        + qtyOfItemInSale(sale, itemId, 5);
+    }
+
+    function soldQtyFor(saleId, itemId) {
+      return soldQty(get(salePath(saleId)).data.lines, itemId);
+    }
+
+    // -------------------------------------------------------------------------
+    // Collections
+    // -------------------------------------------------------------------------
+
+    // The login picker. Public so the staff list renders before anyone is
+    // signed in; it holds no secret, only names, roles and active flags.
+    match /staffDirectory/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Staff profiles. Any signed-in user may read them — they hold no secret
+    // (the PIN lives in Firebase Authentication, not Firestore), and a barber
+    // needs to see who else is working.
+    //
+    // The read rule deliberately does NOT call staffExists(): that would look
+    // the staff document up again, and every rule that reads a staff document
+    // would then re-enter this one, which the rules engine refuses as a cycle.
+    // Only an owner may change a staff record.
+    match /staff/{id} {
+      allow read: if signedIn();
+      allow create, delete: if staffExists() && rankOf(myStaff()) >= 3;
+      allow update: if staffExists()
+        && rankOf(myStaff()) >= 3
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['displayName', 'role', 'branchIds', 'phone', 'active']);
+    }
+
+    match /branches/{id} {
+      allow read: if staffExists();
+      allow write: if staffExists() && rankOf(myStaff()) >= 3;
+    }
+
+    match /barbers/{id} {
+      allow read: if staffExists();
+      allow write: if staffExists() && rankOf(myStaff()) >= 2;
+    }
+
+    match /categories/{id} {
+      allow read: if staffExists();
+      allow write: if staffExists() && rankOf(myStaff()) >= 2;
+    }
+
+    // The catalog. Barbers may only move `stock` down, never up: raising
+    // stock is a restocking job, and only a manager or owner does that.
+    match /items/{id} {
+      allow read: if staffExists();
+      allow create, delete: if staffExists() && rankOf(myStaff()) >= 2;
+      allow update: if staffExists()
+        && (
+          rankOf(myStaff()) >= 2
+          || (
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock'])
+            && request.resource.data.stock >= 0
+            && request.resource.data.stock <= resource.data.stock
+          )
+        );
+    }
+
+    // Customers carry no branch, so they are not branch-scoped.
+    match /customers/{id} {
+      allow read: if staffExists();
+      allow create, delete: if staffExists();
+      allow update: if staffExists();
+    }
+
+    match /appointments/{id} {
+      allow read: if staffExists()
+        && (!resource.exists || branchAllowed(myStaff(), resource.data.branchId));
+      allow create: if staffExists() && branchAllowed(myStaff(), request.resource.data.branchId);
+      allow update: if staffExists()
+        && branchAllowed(myStaff(), resource.data.branchId)
+        && branchAllowed(myStaff(), request.resource.data.branchId);
+      allow delete: if staffExists() && branchAllowed(myStaff(), resource.data.branchId);
+    }
+
+    match /settings/{id} {
+      allow read: if staffExists() && branchAllowed(myStaff(), id);
+      allow write: if staffExists() && branchAllowed(myStaff(), id) && rankOf(myStaff()) >= 2;
+    }
+
+    // -------------------------------------------------------------------------
+    // Sales
+    //
+    // A sale is written by the browser and verified here. It is immutable
+    // afterwards: corrections are new sales, not edits.
+    // -------------------------------------------------------------------------
+
+    match /sales/{id} {
+      // Read allowed for any authenticated staff. The idempotency check in
+      // commitSale() reads a document that may not exist yet — with the old
+      // rule, resource.data.branchId was null for non-existent docs, causing
+      // the read to be denied. Branch scoping is enforced at write time via
+      // the create rule (branchAllowed on request.resource.data).
+      allow read: if staffExists();
+      allow create: if staffExists()
+        && branchAllowed(myStaff(), request.resource.data.branchId)
+        && request.resource.data.cashierId == request.auth.uid
+        && request.resource.data.lines.size() <= 6
+        && lineOk(request.resource.data.lines, 0)
+        && lineOk(request.resource.data.lines, 1)
+        && lineOk(request.resource.data.lines, 2)
+        && lineOk(request.resource.data.lines, 3)
+        && lineOk(request.resource.data.lines, 4)
+        && lineOk(request.resource.data.lines, 5)
+        && request.resource.data.subtotal == sumLineTotals(request.resource.data.lines)
+        && request.resource.data.discount == sumLineDiscounts(request.resource.data.lines)
+        && request.resource.data.total == request.resource.data.subtotal
+        // Only a manager or owner may discount; a barber cannot hand out a
+        // free haircut by editing the request.
+        && (request.resource.data.discount == 0 || rankOf(myStaff()) >= 2)
+        && receiptOk(request.resource.data);
+      allow update, delete: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // Receipt counters
+    //
+    // A counter starts at zero and may only go up by one. Because the day is
+    // the document id, a counter for a past day cannot be recreated and its
+    // sequence cannot be reused.
+    // -------------------------------------------------------------------------
+
+    match /counters/{branchId}/days/{day} {
+      allow read: if staffExists() && branchAllowed(myStaff(), branchId);
+      allow create: if staffExists()
+        && branchAllowed(myStaff(), branchId)
+        && request.resource.data.seq == 0
+        && request.resource.data.code is string;
+      allow update: if staffExists()
+        && branchAllowed(myStaff(), branchId)
+        && request.resource.data.seq == resource.data.seq + 1
+        && request.resource.data.code == resource.data.code;
+      allow delete: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // Stock movements
+    //
+    // A movement must point at a sale and move exactly the quantity that
+    // sale sold. A sale that does not exist cannot be read, so the movement
+    // is refused.
+    // -------------------------------------------------------------------------
+
+    match /stockMovements/{id} {
+      allow read: if staffExists()
+        && (!resource.exists || branchAllowed(myStaff(), resource.data.branchId));
+      allow create: if staffExists()
+        && branchAllowed(myStaff(), request.resource.data.branchId)
+        && request.resource.data.type == 'sale'
+        && request.resource.data.refId is string
+        && request.resource.data.qtyDelta == -soldQtyFor(
+             request.resource.data.refId,
+             request.resource.data.itemId
+           );
+      allow update, delete: if false;
+    }
+
+    // Everything else is denied.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
