@@ -36,19 +36,19 @@
 		></button>
 
 		<div
-			class="relative z-10 flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-2xl border border-ink-700 bg-ink-850 shadow-2xl sm:rounded-2xl {width}"
+			class="relative z-10 flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-2xl border border-stone-200 bg-paper shadow-2xl sm:rounded-2xl {width}"
 		>
-			<header class="flex items-start justify-between gap-4 border-b border-ink-700 px-5 py-4">
+			<header class="flex items-start justify-between gap-4 border-b border-stone-200 px-5 py-4">
 				<div>
-					<h2 class="text-base font-semibold text-ink-100">{title}</h2>
-					{#if subtitle}<p class="mt-0.5 text-xs text-ink-400">{subtitle}</p>{/if}
+					<h2 class="text-base font-semibold text-ink-900">{title}</h2>
+					{#if subtitle}<p class="mt-0.5 text-xs text-ink-600">{subtitle}</p>{/if}
 				</div>
 				<button
 					class="btn btn-ghost size-9 shrink-0 p-0 text-base leading-none"
 					onclick={onclose}
 					aria-label="close"
 				>
-					<Icon name="close" size={16} class="text-ink-400" />
+					<Icon name="close" size={16} class="text-ink-600" />
 				</button>
 			</header>
 
@@ -57,7 +57,7 @@
 			</div>
 
 			{#if footer}
-				<footer class="flex items-center justify-end gap-2 border-t border-ink-700 px-5 py-3">
+				<footer class="flex items-center justify-end gap-2 border-t border-stone-200 px-5 py-3">
 					{@render footer()}
 				</footer>
 			{/if}

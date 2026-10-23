@@ -152,7 +152,7 @@
 	<div class="flex flex-wrap items-center justify-between gap-3">
 		<div>
 			<h1 class="text-xl font-semibold">{$t('catalog.title')}</h1>
-			<p class="text-sm text-ink-400">{visible.length} {$t('common.items')}</p>
+			<p class="text-sm text-ink-500">{visible.length} {$t('common.items')}</p>
 		</div>
 		{#if $canManageCatalog}
 			<button class="btn btn-primary" onclick={openCreate}>
@@ -166,18 +166,18 @@
 		<div class="flex overflow-hidden rounded-lg border border-ink-600">
 			<button
 				class="px-4 py-1.5 text-sm font-medium"
-				class:bg-ink-700={tab === 'service'}
-				class:text-barber-red-400={tab === 'service'}
-				class:text-ink-400={tab !== 'service'}
+				class:bg-ink-200={tab === 'service'}
+				class:text-walnut-500={tab === 'service'}
+				class:text-ink-500={tab !== 'service'}
 				onclick={() => (tab = 'service')}
 			>
 				{$t('catalog.services')}
 			</button>
 			<button
 				class="px-4 py-1.5 text-sm font-medium"
-				class:bg-ink-700={tab === 'product'}
-				class:text-barber-red-400={tab === 'product'}
-				class:text-ink-400={tab !== 'product'}
+				class:bg-ink-200={tab === 'product'}
+				class:text-walnut-500={tab === 'product'}
+				class:text-ink-500={tab !== 'product'}
 				onclick={() => (tab = 'product')}
 			>
 				{$t('catalog.products')}
@@ -194,7 +194,7 @@
 	{:else}
 		<div class="card overflow-hidden">
 			<table class="w-full text-sm">
-				<thead class="border-b border-ink-700 bg-ink-800/50 text-left text-xs tracking-wide text-ink-400 uppercase">
+				<thead class="border-b border-stone-300 bg-stone-200/30 text-left text-xs tracking-wide text-ink-500 uppercase">
 					<tr>
 						<th class="px-4 py-2.5 font-medium">{$t('common.name')}</th>
 						<th class="hidden px-4 py-2.5 font-medium sm:table-cell">{$t('catalog.category')}</th>
@@ -212,21 +212,21 @@
 						{/if}
 					</tr>
 				</thead>
-				<tbody class="divide-y divide-ink-800">
+				<tbody class="divide-y divide-stone-200">
 					{#each visible as item (item.id)}
-						<tr class="transition hover:bg-ink-850" class:opacity-50={!item.active}>
+						<tr class="transition hover:bg-ivory-200" class:opacity-50={!item.active}>
 							<td class="px-4 py-2.5">
 								<p class="font-medium">{item.name}</p>
 								{#if !item.active}
-									<span class="badge mt-0.5 bg-ink-700 text-ink-400">{$t('common.inactive')}</span>
+									<span class="badge mt-0.5 bg-ink-200 text-ink-500">{$t('common.inactive')}</span>
 								{/if}
 							</td>
-							<td class="hidden px-4 py-2.5 text-ink-400 sm:table-cell">
+							<td class="hidden px-4 py-2.5 text-ink-500 sm:table-cell">
 								{$categories.find((c) => c.id === item.categoryId)?.name ?? '—'}
 							</td>
 							{#if tab === 'service'}
-								<td class="px-4 py-2.5 text-ink-400">{formatDuration(item.durationMin ?? 0)}</td>
-								<td class="px-4 py-2.5 text-ink-400">{item.commissionPct ?? 0}%</td>
+								<td class="px-4 py-2.5 text-ink-500">{formatDuration(item.durationMin ?? 0)}</td>
+								<td class="px-4 py-2.5 text-ink-500">{item.commissionPct ?? 0}%</td>
 							{:else}
 								<td class="px-4 py-2.5">
 									{#if $canManageCatalog}
@@ -234,8 +234,8 @@
 											type="number"
 											min="0"
 											class="!w-20 !py-1 text-sm tabular-nums"
-											class:text-rust-400={(item.stock ?? 0) <= 0}
-											class:text-barber-red-400={(item.stock ?? 0) > 0 && (item.stock ?? 0) <= (item.lowStockThreshold ?? 5)}
+											class:text-red-400={(item.stock ?? 0) <= 0}
+											class:text-walnut-500={(item.stock ?? 0) > 0 && (item.stock ?? 0) <= (item.lowStockThreshold ?? 5)}
 											value={item.stock ?? 0}
 											onchange={(e) => setStock(item, Number(e.currentTarget.value))}
 										/>
@@ -243,20 +243,20 @@
 										<span class="tabular-nums">{item.stock ?? 0}</span>
 									{/if}
 								</td>
-								<td class="hidden px-4 py-2.5 text-ink-400 tabular-nums md:table-cell">{formatIDR(item.costPrice ?? 0)}</td>
+								<td class="hidden px-4 py-2.5 text-ink-500 tabular-nums md:table-cell">{formatIDR(item.costPrice ?? 0)}</td>
 								<td class="hidden px-4 py-2.5 font-mono text-xs text-ink-500 lg:table-cell">{item.sku ?? '—'}</td>
 							{/if}
 							<td class="px-4 py-2.5 text-right font-semibold tabular-nums">{formatIDR(item.price)}</td>
 							{#if $canManageCatalog}
 								<td class="px-4 py-2.5">
 									<div class="flex justify-end gap-1">
-										<button class="p-1.5 text-ink-500 hover:text-barber-red-400" onclick={() => openEdit(item)} title={$t('common.edit')}>
+										<button class="p-1.5 text-ink-500 hover:text-walnut-500" onclick={() => openEdit(item)} title={$t('common.edit')}>
 											<Icon name="edit" size={15} />
 										</button>
-										<button class="p-1.5 text-ink-500 hover:text-ink-200" onclick={() => toggleActive(item)} title={item.active ? $t('common.inactive') : $t('common.active')}>
+										<button class="p-1.5 text-ink-500 hover:text-ink-700" onclick={() => toggleActive(item)} title={item.active ? $t('common.inactive') : $t('common.active')}>
 											<Icon name="check" size={15} />
 										</button>
-										<button class="p-1.5 text-ink-600 hover:text-rust-400" onclick={() => remove(item)} title={$t('common.delete')}>
+										<button class="p-1.5 text-ink-600 hover:text-red-400" onclick={() => remove(item)} title={$t('common.delete')}>
 											<Icon name="trash" size={15} />
 										</button>
 									</div>
@@ -278,13 +278,13 @@
 >
 	<div class="space-y-3">
 		<div>
-			<label class="mb-1 block text-xs font-medium text-ink-400" for="f-name">{$t('common.name')}</label>
+			<label class="mb-1 block text-xs font-medium text-ink-500" for="f-name">{$t('common.name')}</label>
 			<input id="f-name" bind:value={form.name} placeholder={tab === 'service' ? 'Potong Rambut Pria' : 'Pomade Rambut 100ml'} />
 		</div>
 
 		{#if kindCategories.length > 0}
 			<div>
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="f-cat">{$t('catalog.category')}</label>
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="f-cat">{$t('catalog.category')}</label>
 				<select id="f-cat" bind:value={form.categoryId}>
 					<option value={null}>—</option>
 					{#each kindCategories as category (category.id)}
@@ -296,17 +296,17 @@
 
 		<div class="grid gap-3 sm:grid-cols-2">
 			<div>
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="f-price">{$t('common.price')} (Rp)</label>
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="f-price">{$t('common.price')} (Rp)</label>
 				<input id="f-price" type="number" min="0" step="500" bind:value={form.price} />
 			</div>
 			{#if tab === 'service'}
 				<div>
-					<label class="mb-1 block text-xs font-medium text-ink-400" for="f-dur">{$t('catalog.durationMin')}</label>
+					<label class="mb-1 block text-xs font-medium text-ink-500" for="f-dur">{$t('catalog.durationMin')}</label>
 					<input id="f-dur" type="number" min="5" step="5" bind:value={form.durationMin} />
 				</div>
 			{:else}
 				<div>
-					<label class="mb-1 block text-xs font-medium text-ink-400" for="f-stock">{$t('catalog.stock')}</label>
+					<label class="mb-1 block text-xs font-medium text-ink-500" for="f-stock">{$t('catalog.stock')}</label>
 					<input id="f-stock" type="number" min="0" bind:value={form.stock} />
 				</div>
 			{/if}
@@ -314,7 +314,7 @@
 
 		{#if tab === 'service'}
 			<div>
-				<label class="mb-1 block text-xs font-medium text-ink-400" for="f-comm">
+				<label class="mb-1 block text-xs font-medium text-ink-500" for="f-comm">
 					{$t('catalog.commission')} <span class="text-ink-600">({$t('common.optional')})</span>
 				</label>
 				<input id="f-comm" type="number" min="0" max="100" bind:value={form.commissionPct} />
@@ -325,26 +325,26 @@
 		{:else}
 			<div class="grid gap-3 sm:grid-cols-2">
 				<div>
-					<label class="mb-1 block text-xs font-medium text-ink-400" for="f-cost">{$t('catalog.costPrice')} (Rp)</label>
+					<label class="mb-1 block text-xs font-medium text-ink-500" for="f-cost">{$t('catalog.costPrice')} (Rp)</label>
 					<input id="f-cost" type="number" min="0" step="500" bind:value={form.costPrice} />
 				</div>
 				<div>
-					<label class="mb-1 block text-xs font-medium text-ink-400" for="f-low">{$t('catalog.lowStockThreshold')}</label>
+					<label class="mb-1 block text-xs font-medium text-ink-500" for="f-low">{$t('catalog.lowStockThreshold')}</label>
 					<input id="f-low" type="number" min="0" bind:value={form.lowStockThreshold} />
 				</div>
 			</div>
 			<div class="grid gap-3 sm:grid-cols-2">
 				<div>
-					<label class="mb-1 block text-xs font-medium text-ink-400" for="f-sku">{$t('catalog.sku')}</label>
+					<label class="mb-1 block text-xs font-medium text-ink-500" for="f-sku">{$t('catalog.sku')}</label>
 					<input id="f-sku" class="font-mono text-sm" bind:value={form.sku} placeholder="POM-100" />
 				</div>
 				<div>
-					<label class="mb-1 block text-xs font-medium text-ink-400" for="f-bar">{$t('catalog.barcode')}</label>
+					<label class="mb-1 block text-xs font-medium text-ink-500" for="f-bar">{$t('catalog.barcode')}</label>
 					<input id="f-bar" class="font-mono text-sm" bind:value={form.barcode} placeholder="8991002101017" />
 				</div>
 			</div>
 			{#if form.price > 0}
-				<p class="rounded-lg bg-ink-800 px-3 py-2 text-xs text-ink-400">
+				<p class="rounded-lg bg-ivory-200 px-3 py-2 text-xs text-ink-500">
 					Profit {formatIDR(form.price - form.costPrice)} ({Math.round(((form.price - form.costPrice) / form.price) * 100)}%)
 				</p>
 			{/if}

@@ -67,7 +67,7 @@
 	<div class="flex flex-wrap items-center justify-between gap-3">
 		<div>
 			<h1 class="text-xl font-semibold">{$t('reports.title')}</h1>
-			<p class="text-sm text-ink-400">{formatDate(date + 'T00:00:00', $intlLocale)}</p>
+			<p class="text-sm text-ink-500">{formatDate(date + 'T00:00:00', $intlLocale)}</p>
 		</div>
 		<div class="flex items-center gap-2">
 			<input type="date" class="!w-auto !py-1.5 text-sm" bind:value={date} />
@@ -78,17 +78,17 @@
 	</div>
 
 	{#if $canViewAllBranches && $branches.length > 1}
-		<div class="flex items-center gap-2 rounded-lg border border-barber-red-600/30 bg-barber-red-500/10 px-3 py-2 text-xs text-barber-red-400">
+		<div class="flex items-center gap-2 rounded-lg border border-walnut-600/30 bg-walnut-500/10 px-3 py-2 text-xs text-walnut-500">
 			<Icon name="globe" size={14} />
 			{$t('reports.byBranch')} — {$t('nav.branches')}
 		</div>
 	{/if}
 
 	<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-		<StatCard label={$t('reports.gross')} value={formatIDR(summary.gross)} tone="barber-red" />
+		<StatCard label={$t('reports.gross')} value={formatIDR(summary.gross)} tone="walnut" />
 		<StatCard label={$t('reports.saleCount')} value={String(summary.count)} />
 		<StatCard label={$t('reports.avgTicket')} value={formatIDR(summary.avgTicket)} />
-		<StatCard label={$t('reports.commissionAccrued')} value={formatIDR(commissions)} tone="jade" />
+		<StatCard label={$t('reports.commissionAccrued')} value={formatIDR(commissions)} tone="sage" />
 	</div>
 
 	{#if daySales.length === 0}
@@ -97,8 +97,8 @@
 		<div class="grid gap-4 xl:grid-cols-3">
 			<!-- Z-report -->
 			<section class="card overflow-hidden xl:col-span-1">
-				<header class="flex items-center gap-2 border-b border-ink-700 px-4 py-3">
-					<Icon name="receipt" size={16} class="text-barber-red-500" />
+				<header class="flex items-center gap-2 border-b border-stone-300 px-4 py-3">
+					<Icon name="receipt" size={16} class="text-walnut-500" />
 					<h2 class="text-sm font-semibold">{$t('reports.zReport')}</h2>
 				</header>
 				<div class="p-4">
@@ -107,18 +107,18 @@
 					</p>
 					<dl class="space-y-1.5 text-sm">
 						{#each zLines as line (line.label)}
-							<div class="flex items-baseline justify-between gap-3 border-b border-ink-800 pb-1.5">
-								<dt class="text-ink-400">{line.label}</dt>
+							<div class="flex items-baseline justify-between gap-3 border-b border-stone-200 pb-1.5">
+								<dt class="text-ink-500">{line.label}</dt>
 								<dd class="font-semibold tabular-nums">{line.value}</dd>
 							</div>
 						{/each}
 					</dl>
 					<div class="mt-4 grid grid-cols-2 gap-2 text-center">
-						<div class="rounded-lg bg-ink-800 py-2">
+						<div class="rounded-lg bg-ivory-200 py-2">
 							<p class="text-xs text-ink-500">{$t('sell.cash')}</p>
 							<p class="text-sm font-semibold tabular-nums">{formatIDR(summary.byMethod.cash.total)}</p>
 						</div>
-						<div class="rounded-lg bg-ink-800 py-2">
+						<div class="rounded-lg bg-ivory-200 py-2">
 							<p class="text-xs text-ink-500">{$t('sell.qris')}</p>
 							<p class="text-sm font-semibold tabular-nums">{formatIDR(summary.byMethod.qris.total)}</p>
 						</div>
@@ -133,8 +133,8 @@
 			<div class="space-y-4 xl:col-span-2">
 				{#each SECTIONS as section (section.title)}
 					<section class="card overflow-hidden">
-						<header class="flex items-center gap-2 border-b border-ink-700 px-4 py-3">
-							<Icon name={section.icon} size={16} class="text-barber-red-500" />
+						<header class="flex items-center gap-2 border-b border-stone-300 px-4 py-3">
+							<Icon name={section.icon} size={16} class="text-walnut-500" />
 							<h2 class="text-sm font-semibold">{$t(section.title)}</h2>
 						</header>
 						{#if section.title === 'reports.byBarber'}
@@ -142,7 +142,7 @@
 								<EmptyState icon="alert" title={$t('reports.noData')} />
 							{:else}
 								<table class="w-full text-sm">
-									<thead class="border-b border-ink-800 text-left text-xs tracking-wide text-ink-400 uppercase">
+									<thead class="border-b border-stone-200 text-left text-xs tracking-wide text-ink-500 uppercase">
 										<tr>
 											<th class="px-4 py-2 font-medium">{$t('common.name')}</th>
 											<th class="px-4 py-2 font-medium">{$t('reports.jobs')}</th>
@@ -150,13 +150,13 @@
 											<th class="px-4 py-2 text-right font-medium">{$t('reports.commission')}</th>
 										</tr>
 									</thead>
-									<tbody class="divide-y divide-ink-800">
+									<tbody class="divide-y divide-stone-200">
 										{#each perf as row (row.barberId)}
 											<tr>
 												<td class="px-4 py-2 font-medium">{row.name}</td>
-												<td class="px-4 py-2 tabular-nums text-ink-400">{row.jobs}</td>
-												<td class="hidden px-4 py-2 tabular-nums text-ink-400 sm:table-cell">{formatIDR(row.revenue)}</td>
-												<td class="px-4 py-2 text-right font-semibold tabular-nums text-jade-400">{formatIDR(row.commission)}</td>
+												<td class="px-4 py-2 tabular-nums text-ink-500">{row.jobs}</td>
+												<td class="hidden px-4 py-2 tabular-nums text-ink-500 sm:table-cell">{formatIDR(row.revenue)}</td>
+												<td class="px-4 py-2 text-right font-semibold tabular-nums text-sage-500">{formatIDR(row.commission)}</td>
 											</tr>
 										{/each}
 									</tbody>
@@ -168,7 +168,7 @@
 								<EmptyState icon="alert" title={$t('reports.noData')} />
 							{:else}
 								<table class="w-full text-sm">
-									<thead class="border-b border-ink-800 text-left text-xs tracking-wide text-ink-400 uppercase">
+									<thead class="border-b border-stone-200 text-left text-xs tracking-wide text-ink-500 uppercase">
 										<tr>
 											<th class="w-8 px-4 py-2 font-medium">#</th>
 											<th class="px-4 py-2 font-medium">{$t('common.name')}</th>
@@ -176,12 +176,12 @@
 											<th class="px-4 py-2 text-right font-medium">{$t('common.total')}</th>
 										</tr>
 									</thead>
-									<tbody class="divide-y divide-ink-800">
+									<tbody class="divide-y divide-stone-200">
 										{#each rows as row, i (row.itemId)}
 											<tr>
 												<td class="px-4 py-2 tabular-nums text-ink-600">{i + 1}</td>
 												<td class="px-4 py-2">{row.name}</td>
-												<td class="px-4 py-2 text-right tabular-nums text-ink-400">{row.qty}</td>
+												<td class="px-4 py-2 text-right tabular-nums text-ink-500">{row.qty}</td>
 												<td class="px-4 py-2 text-right font-semibold tabular-nums">{formatIDR(row.revenue)}</td>
 											</tr>
 										{/each}
@@ -194,18 +194,18 @@
 
 				{#if $canViewAllBranches && $branches.length > 1}
 					<section class="card overflow-hidden">
-						<header class="flex items-center gap-2 border-b border-ink-700 px-4 py-3">
-							<Icon name="building" size={16} class="text-barber-red-500" />
+						<header class="flex items-center gap-2 border-b border-stone-300 px-4 py-3">
+							<Icon name="building" size={16} class="text-walnut-500" />
 							<h2 class="text-sm font-semibold">{$t('reports.byBranch')}</h2>
 						</header>
 						<table class="w-full text-sm">
-							<tbody class="divide-y divide-ink-800">
+							<tbody class="divide-y divide-stone-200">
 								{#each branchStats as row (row.branchId)}
 									<tr>
 										<td class="px-4 py-2 font-medium">{row.name}</td>
-										<td class="px-4 py-2 tabular-nums text-ink-400">{row.count} ×</td>
-										<td class="px-4 py-2 text-right tabular-nums text-ink-400">{formatIDR(row.avgTicket)}</td>
-										<td class="px-4 py-2 text-right font-semibold tabular-nums text-barber-red-400">{formatIDR(row.gross)}</td>
+										<td class="px-4 py-2 tabular-nums text-ink-500">{row.count} ×</td>
+										<td class="px-4 py-2 text-right tabular-nums text-ink-500">{formatIDR(row.avgTicket)}</td>
+										<td class="px-4 py-2 text-right font-semibold tabular-nums text-walnut-500">{formatIDR(row.gross)}</td>
 									</tr>
 								{/each}
 							</tbody>
@@ -217,12 +217,12 @@
 
 		<!-- Transaction log -->
 		<section class="card overflow-hidden">
-			<header class="border-b border-ink-700 px-4 py-3">
+			<header class="border-b border-stone-300 px-4 py-3">
 				<h2 class="text-sm font-semibold">{$t('reports.daily')}</h2>
 			</header>
 			<div class="overflow-x-auto">
 				<table class="w-full min-w-[46rem] text-sm">
-					<thead class="border-b border-ink-800 bg-ink-800/50 text-left text-xs tracking-wide text-ink-400 uppercase">
+					<thead class="border-b border-stone-200 bg-stone-200/30 text-left text-xs tracking-wide text-ink-500 uppercase">
 						<tr>
 							<th class="px-4 py-2.5 font-medium">{$t('reports.saleNo')}</th>
 							<th class="px-4 py-2.5 font-medium">Waktu</th>
@@ -232,18 +232,18 @@
 							<th class="px-4 py-2.5 text-right font-medium">{$t('common.total')}</th>
 						</tr>
 					</thead>
-					<tbody class="divide-y divide-ink-800">
+					<tbody class="divide-y divide-stone-200">
 						{#each daySales as sale (sale.id)}
-							<tr class="hover:bg-ink-850">
-								<td class="px-4 py-2 font-mono text-xs text-ink-400">{sale.receiptNo}</td>
-								<td class="px-4 py-2 tabular-nums text-ink-400">{formatTime(sale.soldAt)}</td>
+							<tr class="hover:bg-ivory-200">
+								<td class="px-4 py-2 font-mono text-xs text-ink-500">{sale.receiptNo}</td>
+								<td class="px-4 py-2 tabular-nums text-ink-500">{formatTime(sale.soldAt)}</td>
 								<td class="px-4 py-2">
 									<p class="truncate">{sale.customerName}</p>
 									<p class="truncate text-xs text-ink-500">{sale.lines.map((l) => l.name).join(', ')}</p>
 								</td>
-								<td class="hidden px-4 py-2 text-ink-400 md:table-cell">{cashierName(sale.cashierId)}</td>
+								<td class="hidden px-4 py-2 text-ink-500 md:table-cell">{cashierName(sale.cashierId)}</td>
 								<td class="hidden px-4 py-2 lg:table-cell">
-									<span class="badge bg-ink-700 text-ink-300">
+									<span class="badge bg-ink-200 text-ink-600">
 										{sale.payment.method === 'cash' ? $t('sell.cash') : $t('sell.qris')}
 									</span>
 								</td>

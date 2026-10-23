@@ -98,20 +98,20 @@
 
 <div class="flex h-full flex-col lg:flex-row">
 	<!-- ── Picker ─────────────────────────────────────────────── -->
-	<div class="flex min-h-0 flex-1 flex-col border-b border-ink-800 lg:border-e lg:border-b-0">
-		<div class="space-y-3 border-b border-ink-800 p-3 sm:p-4">
+	<div class="flex min-h-0 flex-1 flex-col border-b border-stone-200 lg:border-e lg:border-b-0">
+		<div class="space-y-3 border-b border-stone-200 p-3 sm:p-4">
 			<!-- Barber required before any service can be sold -->
 			<div class="flex items-center gap-2 overflow-x-auto pb-1">
-				<span class="shrink-0 text-xs font-medium tracking-wide text-ink-400 uppercase">
+				<span class="shrink-0 text-xs font-medium tracking-wide text-ink-500 uppercase">
 					{$t('sell.selectBarber')}
 				</span>
 				{#each branchBarbers as barber (barber.id)}
 					<button
 						class="btn shrink-0 px-3 py-1.5 text-xs"
-						class:bg-barber-red-500={$cartBarberId === barber.id}
+						class:bg-walnut-500={$cartBarberId === barber.id}
 						class:text-ink-950={$cartBarberId === barber.id}
-						class:bg-ink-800={$cartBarberId !== barber.id}
-						class:text-ink-300={$cartBarberId !== barber.id}
+						class:bg-ivory-200={$cartBarberId !== barber.id}
+						class:text-ink-600={$cartBarberId !== barber.id}
 						onclick={() => (cartBarberId.set(barber.id))}
 					>
 						{barber.displayName}
@@ -127,18 +127,18 @@
 				<div class="flex shrink-0 overflow-hidden rounded-lg border border-ink-600">
 					<button
 						class="px-3 text-xs font-medium"
-						class:bg-ink-700={tab === 'service'}
-						class:text-barber-red-400={tab === 'service'}
-						class:text-ink-400={tab !== 'service'}
+						class:bg-ink-200={tab === 'service'}
+						class:text-walnut-500={tab === 'service'}
+						class:text-ink-500={tab !== 'service'}
 						onclick={() => (tab = 'service')}
 					>
 						{$t('sell.services')}
 					</button>
 					<button
 						class="px-3 text-xs font-medium"
-						class:bg-ink-700={tab === 'product'}
-						class:text-barber-red-400={tab === 'product'}
-						class:text-ink-400={tab !== 'product'}
+						class:bg-ink-200={tab === 'product'}
+						class:text-walnut-500={tab === 'product'}
+						class:text-ink-500={tab !== 'product'}
 						onclick={() => (tab = 'product')}
 					>
 						{$t('sell.products')}
@@ -149,7 +149,7 @@
 
 		<div class="min-h-0 flex-1 overflow-y-auto p-3 sm:p-4">
 			{#if tab === 'service' && !$cartBarberId}
-				<div class="card flex items-center gap-3 p-4 text-sm text-barber-red-400">
+				<div class="card flex items-center gap-3 p-4 text-sm text-walnut-500">
 					<Icon name="scissors" size={18} />
 					{$t('sell.noBarber')}
 				</div>
@@ -159,18 +159,18 @@
 				<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
 					{#each visibleItems as item (item.id)}
 						<button
-							class="card flex flex-col items-start gap-1.5 p-4 text-left transition-all duration-75 hover:border-barber-red-500/60 active:scale-[0.97] disabled:opacity-40"
+							class="card flex flex-col items-start gap-1.5 p-4 text-left transition-all duration-75 hover:border-walnut-500/60 active:scale-[0.97] disabled:opacity-40"
 							disabled={!canAdd || shortStock(item)}
 							onclick={() => pick(item)}
 						>
 							<span class="w-full truncate text-base font-medium">{item.name}</span>
 							<span class="text-xs text-ink-500">{categoryOf(item)}</span>
 							<span class="mt-1 flex w-full items-center justify-between">
-								<span class="text-lg font-semibold tabular-nums text-barber-red-400">{formatIDR(item.price)}</span>
+								<span class="text-lg font-semibold tabular-nums text-walnut-500">{formatIDR(item.price)}</span>
 								{#if item.type === 'service'}
 									<span class="text-[11px] text-ink-500">{formatDuration(item.durationMin ?? 0)}</span>
 								{:else if shortStock(item)}
-									<span class="badge bg-rust-600/20 text-rust-400">{$t('catalog.outOfStock')}</span>
+									<span class="badge bg-red-600/20 text-red-400">{$t('catalog.outOfStock')}</span>
 								{:else if stockOf(item) <= (item.lowStockThreshold ?? 5)}
 									<span class="badge bg-amber-600/20 text-amber-400">{$t('catalog.lowStock')} {stockOf(item)}</span>
 								{/if}
@@ -183,21 +183,21 @@
 	</div>
 
 	<!-- ── Cart ──────────────────────────────────────────────── -->
-	<aside class="flex max-h-[45dvh] shrink-0 flex-col bg-ink-900 lg:max-h-none lg:w-[26rem]">
-		<div class="flex items-center justify-between border-b border-ink-800 px-4 py-3">
+	<aside class="flex max-h-[45dvh] shrink-0 flex-col bg-paper lg:max-h-none lg:w-[26rem]">
+		<div class="flex items-center justify-between border-b border-stone-200 px-4 py-3">
 			<div class="flex items-center gap-2">
 				<h2 class="text-sm font-semibold">{$t('nav.sell')}</h2>
 				{#if $cartCount > 0}
-					<span class="badge bg-ink-700 text-ink-300">{$cartCount}</span>
+					<span class="badge bg-ink-200 text-ink-600">{$cartCount}</span>
 				{/if}
 			</div>
 			{#if $cartCount > 0}
-				<button class="text-xs text-ink-500 hover:text-rust-400" onclick={clearCart}>{$t('sell.clearCart')}</button>
+				<button class="text-xs text-ink-500 hover:text-red-400" onclick={clearCart}>{$t('sell.clearCart')}</button>
 			{/if}
 		</div>
 
 		<!-- Customer -->
-		<div class="space-y-2 border-b border-ink-800 p-3">
+		<div class="space-y-2 border-b border-stone-200 p-3">
 			<input
 				placeholder={$t('sell.customerName')}
 				bind:value={$cartCustomerName}
@@ -217,7 +217,7 @@
 			{#if $cartLines.length === 0}
 				<EmptyState icon="cart" title={$t('sell.cartEmpty')} hint={$t('sell.cartEmptyHint')} />
 			{:else}
-				<ul class="divide-y divide-ink-800">
+				<ul class="divide-y divide-stone-200">
 					{#each $cartLines as line (line.key)}
 						<li class="p-3">
 							<div class="flex items-start justify-between gap-2">
@@ -253,7 +253,7 @@
 									<span class="w-24 text-right text-sm font-semibold tabular-nums">
 										{formatIDR(line.qty * line.unitPrice - line.discount)}
 									</span>
-									<button class="p-1 text-ink-600 hover:text-rust-400" onclick={() => removeLine(line.key)} aria-label={$t('common.delete')}>
+									<button class="p-1 text-ink-600 hover:text-red-400" onclick={() => removeLine(line.key)} aria-label={$t('common.delete')}>
 										<Icon name="trash" size={14} />
 									</button>
 								</div>
@@ -265,7 +265,7 @@
 		</div>
 
 		<!-- Totals + pay -->
-		<div class="border-t border-ink-800 p-3">
+		<div class="border-t border-stone-200 p-3">
 			{#if $cartDuration > 0}
 				<div class="mb-2 flex justify-between text-xs text-ink-500">
 					<span>{$t('catalog.duration')}</span><span>{formatDuration($cartDuration)}</span>
@@ -278,12 +278,12 @@
 			{/if}
 
 			<div class="mb-3 flex items-end justify-between">
-				<span class="text-xs tracking-wide text-ink-400 uppercase">{$t('common.total')}</span>
-				<span class="text-2xl font-semibold tabular-nums text-barber-red-400">{formatIDR($cartTotal)}</span>
+				<span class="text-xs tracking-wide text-ink-500 uppercase">{$t('common.total')}</span>
+				<span class="text-2xl font-semibold tabular-nums text-walnut-500">{formatIDR($cartTotal)}</span>
 			</div>
 
 			{#if !$online}
-				<p class="mb-2 flex items-center gap-1.5 text-[11px] text-barber-red-400">
+				<p class="mb-2 flex items-center gap-1.5 text-[11px] text-walnut-500">
 					<Icon name="offline" size={13} /> {$t('settings.offline')} · {$t('settings.pendingSales')}
 				</p>
 			{/if}
